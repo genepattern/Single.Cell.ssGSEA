@@ -1,6 +1,6 @@
 <!-- remove all comments before releasing -->
 <!-- This is the name of the module as it will appear in GenePatter, and its version, for clarity -->
-# scGSEA (v2)
+# scGSEA (v1)
 
 <!-- A brief text description of the module, usually one sentence in length. -->
 **Description**: Performs single sample GSEA for single cell data
