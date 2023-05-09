@@ -1,12 +1,12 @@
 <!-- remove all comments before releasing -->
 <!-- This is the name of the module as it will appear in GenePatter, and its version, for clarity -->
-# ExampleModule (v2)
+# scGSEA (v2)
 
 <!-- A brief text description of the module, usually one sentence in length. -->
-**Description**: This is an example GenePattern module written in Python 3. It can be used as a template for future modules. It reads a file and potentially adds a line of text
+**Description**: Performs single sample GSEA for single cell data
 
 <!-- This field is for the author or creator of the module. If the algorithm of the module is from a published paper, this is usually the first or corresponding author from the paper. If the module algorithm is unpublished, this is usually the developer of the module itself. This field can simply be a name of a person or group. -->
-**Authors**: Edwin F. Juarez; UCSD - Mesirov Lab, UCSD; Barbara Hill - Mesirov Lab, Broad Institute
+**Authors**: John Jun; UCSD - Mesirov Lab, UCSD
 
 <!--This field is used for responding to help requests for the module, and should be an email address or a link to a website with contact information or a help forum. -->
 **Contact**: [Forum Link](https://groups.google.com/forum/?utm_medium=email&utm_source=footer#!forum/genepattern-help)
@@ -17,8 +17,18 @@
 <!-- Why use this module? What does it do? If this is one of a set of modules, how does this module fit in the set? How does it work? write overview as if you are explaining to a novice. Include any links or images which would serve to clarify -->
 ## Summary
 
-This is an example GenePattern module written in [Python 3](https://www.python.org/download/releases/3.0/).
-It can be used as a template for future modules. It reads a file and potentially adds a line of text.
+Single-cell GSEA (scGSEA), an extension of single-sample Gene Set Enrichment Analysis (GSEA), calculates separate enrichment scores for each pairing of a sample and gene set. Each scGSEA enrichment score represents the degree to which the genes in a particular gene set are coordinately up- or down-regulated within a sample.
+
+## Discussion
+When analyzing genome-wide transcription profiles from microarray data, a typical goal is to find genes significantly differentially correlated with distinct sample classes defined by a particular phenotype (e.g., tumor vs. normal). These findings can be used to provide insights into the underlying biological mechanisms or to classify (predict the phenotype of) a new sample. Gene Set Enrichment Analysis (GSEA) addressed this problem by evaluating whether a priori defined sets of genes, associated with particular biological processes (such as pathways), chromosomal locations, or experimental results are enriched at either the top or bottom of a list of differentially expressed genes ranked by some measure of differences in a gene’s expression across sample classes. Examples of ranking metrics are fold change for categorical phenotypes (e.g., tumor vs. normal) and Pearson correlation for continuous phenotypes (e.g., age). Enrichment provides evidence for the coordinate up- or down-regulation of a gene set’s members and the activation or repression of some corresponding biological process.
+
+Where GSEA generates a gene set’s enrichment score with respect to phenotypic differences across a collection of samples within a dataset, ssGSEA calculates a separate enrichment score for each pairing of sample and gene set, independent of phenotype labeling. In this manner, ssGSEA transforms a single sample’s gene expression profile to a gene set enrichment profile. A gene set’s enrichment score represents the activity level of the biological process in which the gene set’s members are coordinately up- or down-regulated. This transformation allows researchers to characterize cell state in terms of the activity levels of biological processes and pathways rather than through the expression levels of individual genes.
+
+In working with the transformed data, the goal is to find biological processes that are differentially active across the phenotype of interest and to use these measures of process activity to characterize the phenotype. Thus, the benefit here is that the ssGSEA projection transforms the data to a higher-level (pathways instead of genes) space representing a more biologically interpretable set of features on which analytic methods can be applied.
+
+As a practical matter, ssGSEA essentially reduces the dimensionality of the set. You can look for correlations between the gene set enrichment scores and the phenotype of interest (e.g., tumor vs. normal) using the GCT output with a module like ComparativeMarkerSelection. You could also try clustering the data set; whichever gene sets stand out as strong predictors of the phenotype of interest, specific clusters can then be mapped to biochemical pathways, giving you insight into what is driving the phenotype of interest.
+
+While the GCT can be passed along to any module accepting that format, it does not make sense to run it through GSEA.
 
 <!-- appropriate papers should be cited here -->
 ## References
