@@ -74,16 +74,6 @@ Input:
 Output:  
 [created_file_ground_truth.txt](https://github.com/genepattern/ExampleModule/blob/v2/gpunit/output/basic_test/created_file_ground_truth.txt)
 
-
-## Requirements
-<!--This section is typically used to list any special requirements for running the module, such as, language/operating system requirements and Docker images. -->
-
-Requires the [genepattern/example-module:2 Docker image](https://hub.docker.com/layers/150060459/genepattern/example-module/2/images/sha256-ae4fffff67672e46b251f954ad226b7ad99403c456c1c19911b6ac82f1a27f2f?context=explore).
-
-## License
-
-`ExampleModule` is distributed under a modified BSD license available at [https://github.com/genepattern/ExampleModule/blob/v2/LICENSE.](https://github.com/genepattern/ExampleModule/blob/v2/LICENSE)
-
 ## Platform Dependencies
 Task Type:
 Projection
