@@ -11,18 +11,18 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--filename",
                     type=str,
                     help="Name of the file to be read")
-parser.add_argument("-a", "--addtext",
-                    type=str,
-                    help="Wether or not to add a custom message",
-                    default='False')
-parser.add_argument("-m", "--message",
-                    type=str,
-                    help="What message to add (if any)",
-                    default='False')
-parser.add_argument("-o", "--output_filename",
-                    type=str,
-                    help="The basename to use for output file",
-                    default='TCGA_dataset')
+# parser.add_argument("-a", "--addtext",
+#                     type=str,
+#                     help="Wether or not to add a custom message",
+#                     default='False')
+# parser.add_argument("-m", "--message",
+#                     type=str,
+#                     help="What message to add (if any)",
+#                     default='False')
+# parser.add_argument("-o", "--output_filename",
+#                     type=str,
+#                     help="The basename to use for output file",
+#                     default='TCGA_dataset')
 
 # ~~~~Development Optional Arguments~~~~~ #
 # Reminder: "store_true" args, are False by default and when the flag is passed
