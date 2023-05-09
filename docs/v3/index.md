@@ -89,5 +89,4 @@ Requires the [genepattern/example-module:2 Docker image](https://hub.docker.com/
 
 | Version | Release Date | Description                                 |
 ----------|--------------|---------------------------------------------|
-|  1.4  | May 17, 2021 | Added all GenePattern Team module release requirements and renamed as ExampleModule, from ABasicModule. |
-| 1 | May 1, 2018 | Initial version for team use. |
+| 1 | May 09, 2023 | Initial version. |
