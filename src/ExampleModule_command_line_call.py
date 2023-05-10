@@ -11,8 +11,8 @@ INPUT_FILE_DIRECTORIES = os.path.join(ROOT, 'data/')
 
 command_line = "python "+TASKLIB+"ExampleModule.py"\
                 + " -f " + INPUT_FILE_DIRECTORIES+"data_placeholder.txt"\
-                + " -a True"\
-                + ' -m "This message has been added."'\
+                #+ " -a True"\
+                #+ ' -m "This message has been added."'\
                 + " -o created_file_ground_truth"
                 # + " -d"
 print("About to call the module using the command line:", command_line)
