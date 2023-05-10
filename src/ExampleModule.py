@@ -54,7 +54,7 @@ if not out_filename.endswith('.gct'):
 with open(out_filename, 'w') as g:
   for line in f.readlines():
     g.write(line)
-   g.write('\n')  # This could be an argument, wether or not to add a newline.
+    g.write('\n')  # This could be an argument, wether or not to add a newline.
 f.close()
 
 end_of_time = timer()
