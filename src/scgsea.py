@@ -19,10 +19,6 @@ parser.add_argument("-f", "--filename",
 #                     type=str,
 #                     help="What message to add (if any)",
 #                     default='False')
-parser.add_argument("-o", "--output_filename",
-                    type=str,
-                    help="The basename to use for output file",
-                    default='scGSEA_scores')
 
 # ~~~~Development Optional Arguments~~~~~ #
 # Reminder: "store_true" args, are False by default and when the flag is passed
@@ -34,8 +30,8 @@ parser.add_argument("-o", "--output_filename",
 #                     action="store_true",
 #                     help="increase output verbosity")
 args = parser.parse_args()
-if args.verbose:
-    print("Ah! The old verbosaroo")
+# if args.verbose:
+#     print("Ah! The old verbosaroo")
 
 print("~~~~~~~~~~~~~~~~~~~~~~")
 print("Using arguments:")
