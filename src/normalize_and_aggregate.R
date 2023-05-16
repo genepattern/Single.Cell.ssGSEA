@@ -48,7 +48,7 @@ print("has been read to memory!")
 SeuratObj <- NormalizeData(SeuratObj, normalization.method = "CLR", margin = 2, verbose = TRUE)
 
 # Aggregate cells by metacell annotation
-aggregatedObj <- Aggregate(SeuratObj, group.by = "idents", verbose = TRUE)
+aggregatedObj <- AggregateExpression(SeuratObj, group.by = "idents", verbose = TRUE)
 
 # Save the metacell expression vector in csv format
 
