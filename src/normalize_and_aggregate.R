@@ -9,12 +9,17 @@ library("optparse")
 parser = OptionParser()
 # parameter types: 'character', 'integer', 'logical', 'double', or 'complex'
 # ====================================
-# Paramter for setupR
+# Paramter for the input file
 parser <- add_option(parser, c("--input_file"), help = "RDS file to load.")
 
 # ====================================
-#parameter for saving plot
-parser <- add_option(parser, c("--output_file_name"),type='character',default='metacells', help = "Basename of the file to be saved.")
+# parameter for the output file name
+parser <- add_option(parser, c("--gene_set_file"), help = "GMT file to load.")
+# ====================================
+
+# ====================================
+# parameter for the output file name
+parser <- add_option(parser, c("--output_file_name"),type='character',default='scGSEA_scores', help = "Basename of the file to be saved.")
 # ====================================
 
 print('==========================================================')
