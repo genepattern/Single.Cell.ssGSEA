@@ -7,14 +7,14 @@ import pandas as pd
 from timeit import default_timer as timer
 beginning_of_time = timer()
 
-parser = argparse.ArgumentParser()
+# parser = argparse.ArgumentParser()
 # ~~~~Module Required Arguments~~~~~ #
 # parser.add_argument("--gene_set_database_files",
 #                     type=str,
 #                     help="What message to add (if any)",
 #                     default='False')
 
-args = parser.parse_args()
+# args = parser.parse_args()
 # if args.verbose:
 #     print("Ah! The old verbosaroo")
 
