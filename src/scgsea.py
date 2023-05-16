@@ -14,7 +14,7 @@ parser.add_argument("--input_file",
                     help="Input file",
                     default='False')
 
-parser.add_argument("--gene_set_database_files",
+parser.add_argument("--gene_set_database_file",
                     type=str,
                     help="gene set",
                     default='False')
