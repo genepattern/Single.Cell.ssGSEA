@@ -7,7 +7,7 @@ import pandas as pd
 from timeit import default_timer as timer
 beginning_of_time = timer()
 
-# parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser()
 # ~~~~Module Required Arguments~~~~~ #
 parser.add_argument("--input_file",
                     type=str,
