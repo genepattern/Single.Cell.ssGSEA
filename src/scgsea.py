@@ -20,7 +20,7 @@ beginning_of_time = timer()
 
 print("~~~~~~~~~~~~~~~~~~~~~~")
 print("Using arguments:")
-print(args)
+# print(args)
 print("Now getting work done.")
 print("~~~~~~~~~~~~~~~~~~~~~~")
 
