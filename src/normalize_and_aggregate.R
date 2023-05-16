@@ -53,7 +53,7 @@ SeuratObj <- NormalizeData(SeuratObj, normalization.method = "CLR", margin = 2, 
 # Group by metacell 
 print("Aggregating the cells by clusters")
 print('==========================================================')
-aggregatedObj <- AverageExpression(SeuratObj2, group.by = "seurat_clusters", use.raw = FALSE, verbose = TRUE)
+aggregatedObj <- AverageExpression(SeuratObj, group.by = "seurat_clusters", use.raw = FALSE, verbose = TRUE)
 
 print("Saving metacell average expression profile.")
 print('==========================================================')
