@@ -19,7 +19,7 @@ parser.add_argument("--gene_set_database_files",
                     help="gene set",
                     default='False')
 
-# args = parser.parse_args()
+args = parser.parse_args()
 # if args.verbose:
 #     print("Ah! The old verbosaroo")
 
@@ -39,10 +39,10 @@ print("~~~~~~~~~~~~~~~~~~~~~~")
 # out_filename = args.output_filename
 
 # Load the metacell expression data
-metacell_exp = pd.read_csv(args$intput_file, index_col = 0)
+metacell_exp = pd.read_csv(args.input_file, index_col = 0)
 
 # Load the gene set database files
-gs = pd.read_csv(args$gene_set_database_file, index_col = 0, header = None)
+gs = pd.read_csv(args.gene_set_database_file, index_col = 0, header = None)
 
 print("loaded both metacell and gene set")
 # # Check for cluster annotation metadata
