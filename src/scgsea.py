@@ -63,7 +63,9 @@ scGSEA_scores = single_sample_gseas(
     html_file_path="{}_plot".format(args.output_file_name,
     plotly_html_file_path=None)
 
-scGSEA_scores.to_csv(args.output_file_name)
+print(scGSEA_scores)
+
+scGSEA_scores.to_csv("{}.csv".format(args.output_file_name))
 
 end_of_time = timer()
 print("We are done! Wall time elapsed:", humanfriendly.format_timespan(end_of_time - beginning_of_time))
