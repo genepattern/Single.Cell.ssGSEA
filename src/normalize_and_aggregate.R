@@ -43,13 +43,20 @@ print(args$input_file)
 SeuratObj = readRDS(args$input_file)
 cat(args$input_file)
 print("has been read to memory!")
+library(Seurat)
 
-# Perform CLR normalization across cells
+# Normalize the raw data
+print("Normalizing the data")
+print('==========================================================')
 SeuratObj <- NormalizeData(SeuratObj, normalization.method = "CLR", margin = 2, verbose = TRUE)
 
-# Aggregate cells by metacell annotation
-aggregatedObj <- AggregateExpression(SeuratObj, group.by = "idents", verbose = TRUE)
+# Group by metacell 
+print("Aggregating the cells by clusters")
+print('==========================================================')
+aggregatedObj <- AverageExpression(SeuratObj2, group.by = "seurat_clusters", use.raw = FALSE, verbose = TRUE)
 
-# Save the metacell expression vector in csv format
+print("Saving metacell average expression profile.")
+print('==========================================================')
+write.csv(aggregatedObj, file = "metacell_expression.csv", row.names = TRUE)
 
 dev.off() # Close the PDF file
