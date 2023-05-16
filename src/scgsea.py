@@ -14,10 +14,10 @@ parser.add_argument("--input_file",
                     help="Input file",
                     default='False')
 
-# parser.add_argument("--gene_set_database_files",
-#                     type=str,
-#                     help="What message to add (if any)",
-#                     default='False')
+parser.add_argument("--gene_set_database_files",
+                    type=str,
+                    help="gene set",
+                    default='False')
 
 # args = parser.parse_args()
 # if args.verbose:
@@ -25,7 +25,7 @@ parser.add_argument("--input_file",
 
 print("~~~~~~~~~~~~~~~~~~~~~~")
 print("Using arguments:")
-# print(args)
+print(args)
 print("Now getting work done.")
 print("~~~~~~~~~~~~~~~~~~~~~~")
 
@@ -38,9 +38,13 @@ print("~~~~~~~~~~~~~~~~~~~~~~")
 # # Open the output file
 # out_filename = args.output_filename
 
-# # Load the single cell transcriptomic dataset
-# data = sc.read_h5ad('../data/17_liver.h5ad')
+# Load the metacell expression data
+metacell_exp = pd.read_csv(args$intput_file, index_col = 0)
 
+# Load the gene set database files
+gs = pd.read_csv(args$gene_set_database_file, index_col = 0, header = None)
+
+print("loaded both metacell and gene set")
 # # Check for cluster annotation metadata
 # if 'cluster' not in data.obs.keys():
 #   raise ValueError("cluster annotation metadata not found.")
