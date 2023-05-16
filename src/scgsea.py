@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from ExampleModule_functions import *
+from scgsea_helper import *
 import argparse
 import humanfriendly
 import pandas as pd
