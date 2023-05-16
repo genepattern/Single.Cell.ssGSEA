@@ -9,6 +9,11 @@ beginning_of_time = timer()
 
 # parser = argparse.ArgumentParser()
 # ~~~~Module Required Arguments~~~~~ #
+parser.add_argument("--input_file",
+                    type=str,
+                    help="Input file",
+                    default='False')
+
 # parser.add_argument("--gene_set_database_files",
 #                     type=str,
 #                     help="What message to add (if any)",
@@ -25,10 +30,10 @@ print("Now getting work done.")
 print("~~~~~~~~~~~~~~~~~~~~~~")
 
 # Open the input file
-print("About to read the metacell expression")
-if os.path.exists("metacell_expression.csv"):
-  metacell_exp = pd.read_csv("metacell_expression.csv", index_col = 0)
-print(metacell_exp)
+# print("About to read the metacell expression")
+# if os.path.exists("metacell_expression.csv"):
+#   metacell_exp = pd.read_csv("metacell_expression.csv", index_col = 0)
+# print(metacell_exp)
 
 # # Open the output file
 # out_filename = args.output_filename
