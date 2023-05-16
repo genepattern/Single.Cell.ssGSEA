@@ -14,7 +14,7 @@ parser <- add_option(parser, c("--input_file"), help = "RDS file to load.")
 
 # ====================================
 # parameter for the output file name
-parser <- add_option(parser, c("--gene_set_file"), help = "GMT file to load.")
+# parser <- add_option(parser, c("--gene_set_file"), help = "GMT file to load.")
 # ====================================
 
 # ====================================
