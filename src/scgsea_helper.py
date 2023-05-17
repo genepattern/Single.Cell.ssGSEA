@@ -35,8 +35,8 @@ def single_sample_gsea(
     miss = (1 - in_int) / (in_.size - in_sum)
     y = hit - miss
     cumulative_sums = y.cumsum()
-    if statistic not in ("ks", "auc"):
-        raise ValueError("Unknown statistic: {}.".format(statistic))
+    
+    # KS scoring
     max_ = cumulative_sums.max()
     min_ = cumulative_sums.min()
     if absolute(min_) < absolute(max_):
@@ -44,8 +44,6 @@ def single_sample_gsea(
     else:
         score = min_
 
-    score = cumulative_sums.sum()
-        
     return score
 
 # Run multiple ssGSEAs
