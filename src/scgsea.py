@@ -73,7 +73,7 @@ scGSEA_scores = single_sample_gseas(
     html_file_path="{}_plot".format(args.output_file_name,
     plotly_html_file_path=None)
 
-print(scGSEA_scores)
+# print(scGSEA_scores)
 
 scGSEA_scores.to_csv("{}.csv".format(args.output_file_name))
 
