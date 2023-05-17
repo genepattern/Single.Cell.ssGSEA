@@ -21,7 +21,12 @@ parser.add_argument("--gene_set_database_file",
 
 parser.add_argument("--output_file_name",
                     type=str,
-                    help="gene set",
+                    help="scGSEA scores",
+                    default='False')
+
+parser.add_argument("--chip_file",
+                    type=str,
+                    help="chip file",
                     default='False')
 
 args = parser.parse_args()
@@ -49,6 +54,7 @@ metacell_exp = pd.read_csv(args.input_file, index_col = 0)
 # Load the chip file and convert to gene symbol
 chip = read_chip(args.chip_file)
 metacell_exp = convert_to_gene_symbol(chip, metacell_exp)
+print("converted to gene symbol")
 
 # Load the gene set database files
 gs = pd.read_csv(args.gene_set_database_file, index_col = 0, header = None)
