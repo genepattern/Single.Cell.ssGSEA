@@ -78,4 +78,14 @@ def single_sample_gseas(
     perm_scores.columns = [gene_scores.columns]
     return perm_scores
 
+def read_chip(chip):
+    chip_df=pd.read_csv(chip, sep='\t', index_col=0, skip_blank_lines=True)
+    return chip_df
 
+def convert_to_genesymbol(chip, exp):
+    joined_df = chip.join(exp, how='inner')
+    joined_df.reset_index(drop=True, inplace=True)
+    annotations = joined_df[["Gene Symbol", "Gene Title"]].drop_duplicates().copy()
+    joined_df.drop("Gene Title", axis = 1, inplace = True)
+    collapsed_df = joined_df.groupby(["Gene Symbol"]).max()
+    return collapsed_df
