@@ -2,6 +2,7 @@
 #NB - all of these import statements should specify their versions and be executed in a separate script at Docker build time.
 
 import pandas as pd
+from numpy import absolute, in1d, sort
 
 # Here is where I'd put my functions, if I had any!
 def single_sample_gsea(
