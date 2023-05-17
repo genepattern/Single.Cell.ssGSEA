@@ -82,7 +82,7 @@ def read_chip(chip):
     chip_df=pd.read_csv(chip, sep='\t', index_col=0, skip_blank_lines=True)
     return chip_df
 
-def convert_to_genesymbol(chip, exp):
+def convert_to_gene_symbol(chip, exp):
     joined_df = chip.join(exp, how='inner')
     joined_df.reset_index(drop=True, inplace=True)
     annotations = joined_df[["Gene Symbol", "Gene Title"]].drop_duplicates().copy()
