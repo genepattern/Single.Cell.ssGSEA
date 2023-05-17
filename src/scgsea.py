@@ -70,7 +70,7 @@ scGSEA_scores = single_sample_gseas(
     annotation_text_font_size=16,
     annotation_text_width=88,
     annotation_text_yshift=64,
-    html_file_path="{}_plot".format(args.output_file_name,
+    html_file_path="{}_plot".format(args.output_file_name),
     plotly_html_file_path=None)
 
 # print(scGSEA_scores)
