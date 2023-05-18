@@ -94,8 +94,8 @@ def convert_to_gene_symbol(chip, exp):
 
 def write_gct(out_matrix, file_name):
     text_file = open(filename + ".gct", "w")
-        text_file.write('#1.2\n')
-        text_file.write(str(len(out_matrix)) + "\t" +
+    text_file.write('#1.2\n')
+    text_file.write(str(len(out_matrix)) + "\t" +
                         str(len(out_matrix.columns) - 1) + "\n")
-        text_file.close()
-        out_matrix.to_csv(filename + ".gct", sep="\t", mode='a')
+    text_file.close()
+    out_matrix.to_csv(filename + ".gct", sep="\t", mode='a')
