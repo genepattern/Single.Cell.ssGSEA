@@ -2,43 +2,38 @@
 
 from scgsea_helper import *
 import argparse
-import humanfriendly
 import pandas as pd
 import os
+
+import humanfriendly
 from timeit import default_timer as timer
 beginning_of_time = timer()
 
 parser = argparse.ArgumentParser()
 # ~~~~Module Required Arguments~~~~~ #
-# parser.add_argument("--input_file",
-#                     type=str,
-#                     help="Input file",
-#                     default='False')
-
 parser.add_argument("--gene_set_database_file",
                     type=str,
-                    help="gene set",
+                    help="Gene set file",
                     default='False')
 
 parser.add_argument("--output_file_name",
                     type=str,
-                    help="scGSEA scores",
+                    help="Output file name",
                     default='False')
 
 parser.add_argument("--chip_file",
                     type=str,
-                    help="chip file",
+                    help="Chip file",
                     default='False')
 
 args = parser.parse_args()
-# if args.verbose:
-#     print("Ah! The old verbosaroo")
 
-print("~~~~~~~~~~~~~~~~~~~~~~")
-print("Using arguments:")
-print(args)
+print('==========================================================')
+print("Running scGSEA for")
+print(args.gene_set_database_file)
+
 print("Now getting work done.")
-print("~~~~~~~~~~~~~~~~~~~~~~")
+print('==========================================================')
 
 # Open the input file
 print("About to read the metacell expression")
