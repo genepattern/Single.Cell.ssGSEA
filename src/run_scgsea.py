@@ -46,7 +46,9 @@ else:
 print("Loading CHIP file to convert to Gene Symbol")
 print('==========================================================')
 chip = read_chip(args.chip_file)
+chip.to_csv("chip_file.csv") # TEST
 cluster_exp = convert_to_gene_symbol(chip, cluster_exp)
+cluster_exp.to_csv("converted_cluster_exp.csv") # TEST
 print("Loaded CHIP file!\n")
 
 # Load the gene set database files
