@@ -9,28 +9,14 @@ library("optparse")
 parser = OptionParser()
 # parameter types: 'character', 'integer', 'logical', 'double', or 'complex'
 # ====================================
-# Paramter for the input file
+# Paramter for the RDS input file
 parser <- add_option(parser, c("--input_file"), help = "RDS file to load.")
-
-# ====================================
-# parameter for the output file name
-# parser <- add_option(parser, c("--gene_set_file"), help = "GMT file to load.")
-# ====================================
-
-# ====================================
-# parameter for the output file name
-# parser <- add_option(parser, c("--output_file_name"),type='character',default='scGSEA_scores', help = "Basename of the file to be saved.")
-# ====================================
 
 print('==========================================================')
 args <- parse_args(parser)
 print('Parameters used:')
 print(args)
 print('==========================================================')
-# Setting up the PDF file for the plots
-# pdf(file=paste(args$output_file_name,'.pdf',sep=''))
-
-# Processing how to merge plots
 
 cat('Loading Seurat...')
 suppressMessages(library(Seurat))
@@ -41,14 +27,11 @@ print('...done loading libraries!')
 ################################################################################
 
 print('==========================================================')
-# Call the setupR function
-
 cat("About to read the Seurat object named")
 print(args$input_file)
 SeuratObj = readRDS(args$input_file)
 cat(args$input_file)
 print("has been read to memory!")
-library(Seurat)
 
 # Normalize the raw data
 print("Normalizing the data")
