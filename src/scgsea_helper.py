@@ -98,7 +98,14 @@ def write_gct(out_matrix, filename):
     text_file.write(str(len(out_matrix)) + "\t" +
                         str(len(out_matrix.columns) - 1) + "\n")
     text_file.close()
+    
+    # Change the column names from RNA.<cluster_number> to cluster<cluster_number>
     column_count = len(out_matrix.columns)
     new_cols = ['cluster' + str(i) for i in range(1, column_count + 1)]
     out_matrix.columns = new_cols
+    
+    # Save as a gct file
     out_matrix.to_csv(filename + ".gct", sep="\t", mode='a')
+    # Save as a csv file
+    out_matrix.to_csv(filename + ".csv", sep="\t", mode='w')
+    
