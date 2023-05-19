@@ -53,7 +53,7 @@ print("Loaded CHIP file!\n")
 print(f"Loading {args.gene_set_database_file} to convert to Gene Symbol")
 print('==========================================================')
 # gs = pd.read_csv(args.gene_set_database_file, index_col = 0, sep = "\t', header = None)
-gs = pd.read_gmt(args.gene_set_database_file)
+gs = read_gmt(args.gene_set_database_file)
 gs.to_csv("geneset_loaded.csv") # Test
 print("Loaded gene set file!\n")
 
