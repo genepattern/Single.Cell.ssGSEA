@@ -43,15 +43,17 @@ parser.add_argument("--chip_file",
 
 args = parser.parse_args()
 
-print("Proprocessing the RDS data")
+print('==========================================================')
+print("Proprocessing the RDS data...")
 print('==========================================================')
 r_command = ['Rscript', args.rscript, "--input_file", args.input_file]
 subprocess.run(r_command)
-print("Finished Preprocessing")
+print("Finished Preprocessing!\n")
 
-# print("Perform scGSEA")
-# print('==========================================================')
+print('==========================================================')
+print("Performing scGSEA...")
+print('==========================================================')
 # python_command = ['python3', args.pyscript, "--gene_set_database_file", args.gene_set_database_file, \
 #                  "--output_file_name", args.output_file_name, "--chip_file", args.chip_file]
 # subprocess.run(python_command) 
-# print("scGSEA Complete!")
+# print("scGSEA Complete!\n")
