@@ -98,4 +98,7 @@ def write_gct(out_matrix, filename):
     text_file.write(str(len(out_matrix)) + "\t" +
                         str(len(out_matrix.columns) - 1) + "\n")
     text_file.close()
+    column_count = len(out_matrix.columns)
+    new_cols = ['cluster' + str(i) for i in range(1, column_count + 1)]
+    out_matrix.columns = new_cols
     out_matrix.to_csv(filename + ".gct", sep="\t", mode='a')
