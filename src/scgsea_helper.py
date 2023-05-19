@@ -2,6 +2,7 @@
 #NB - all of these import statements should specify their versions and be executed in a separate script at Docker build time.
 
 import pandas as pd
+import numpy
 import warnings
 from numpy import absolute, in1d, sort
 
@@ -120,7 +121,7 @@ def read_gmt(gs_db, thres_min=2, thres_max=2000):
     for i in range(max_Ng):
         temp_size_G[i]=len(temp[i].split("\t")) - 2
     max_size_G=max(temp_size_G)
-    gs=pandas.DataFrame(numpy.nan, index=range(max_Ng), columns=range(max_size_G))
+    gs=pd.DataFrame(numpy.nan, index=range(max_Ng), columns=range(max_size_G))
     temp_names=list(range(max_Ng))
     temp_desc=list(range(max_Ng))
     gs_count=0
