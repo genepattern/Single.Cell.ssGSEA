@@ -2,7 +2,7 @@
        *** GENEPATTERN LICENSE AGREEMENT ***
 
 ----------------------------------------------------------------
-The GenePattern ExampleModule is distributed under the following BSD-style license:
+The scGSEA module for GenePattern is distributed under the following BSD-style license:
 
 Copyright (c) 2003-2021 Regents of the University of California and Broad Institute. All rights reserved.
 
@@ -38,3 +38,4 @@ are determined inapplicable, your sole remedy, regardless of the form of action,
 including, but not limited to, negligence and strict liability, shall be replacement
 of the software with an updated version if one exists.
 
+Development of the scGSEA module for GenePattern was funded, in whole or in part, by the Chan Zuckerberg Initiative.
