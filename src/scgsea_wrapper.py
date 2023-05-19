@@ -53,7 +53,7 @@ print("Finished Preprocessing!\n")
 print('==========================================================')
 print("Performing scGSEA...")
 print('==========================================================')
-# python_command = ['python3', args.pyscript, "--gene_set_database_file", args.gene_set_database_file, \
-#                  "--output_file_name", args.output_file_name, "--chip_file", args.chip_file]
+python_command = ['python3', args.pyscript, "--gene_set_database_file", args.gene_set_database_file, \
+                 "--output_file_name", args.output_file_name, "--chip_file", args.chip_file]
 # subprocess.run(python_command) 
 # print("scGSEA Complete!\n")
