@@ -43,10 +43,6 @@ print("Aggregating the cells by clusters")
 print('==========================================================')
 aggregatedObj <- AverageExpression(SeuratObj, group.by = "seurat_clusters", use.raw = FALSE)
 
-num_cols <- ncol(aggregatedObj)
-new_names <- paste("cluster", 1:num_cols, sep = "")
-colnames(aggregatedObj) <- new_names
-
 print("Saving metacell average expression profile.")
 print('==========================================================')
 write.csv(aggregatedObj, file = "cluster_expression.csv", row.names = TRUE)
