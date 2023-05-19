@@ -33,7 +33,7 @@ print("Running scGSEA for")
 print(args.gene_set_database_file)
 
 print("Now getting work done.")
-print('==========================================================')
+print('==========================================================\n')
 
 # Open the input file
 print("About to read the metacell expression")
@@ -43,15 +43,19 @@ else:
   print("cluster_expression.csv not available")
 
 # Load the chip file and convert to gene symbol
+print("Loading CHIP file to convert to Gene Symbol")
+print('==========================================================')
 chip = read_chip(args.chip_file)
 cluster_exp = convert_to_gene_symbol(chip, cluster_exp)
-print("converted to gene symbol")
+print("Loaded CHIP file!\n")
 
 # Load the gene set database files
-gs = pd.read_csv(args.gene_set_database_file, index_col = 0, header = None)
-
-print("Loaded both cluster expression and gene set database")
+print(f"Loading {args.gene_set_database_file} to convert to Gene Symbol")
 print('==========================================================')
+gs = pd.read_csv(args.gene_set_database_file, index_col = 0, header = None)
+print("Loaded gene set file!\n")
+
+print("Running scGSEA...")
 scGSEA_scores = single_sample_gseas(
     cluster_exp,
     gs,
