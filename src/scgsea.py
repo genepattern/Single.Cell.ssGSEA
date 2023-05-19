@@ -37,29 +37,23 @@ print('==========================================================')
 
 # Open the input file
 print("About to read the metacell expression")
-if os.path.exists("metacell_expression.csv"):
-  metacell_exp = pd.read_csv("metacell_expression.csv", index_col = 0)
+if os.path.exists("cluster_expression.csv"):
+  cluster_exp = pd.read_csv("cluster_expression.csv", index_col = 0)
 else:
-  print("metacell_expression.csv not available")
-
-# # Open the output file
-# out_filename = args.output_filename
-
-# Load the metacell expression data
-# metacell_exp = pd.read_csv(args.input_file, index_col = 0)
+  print("cluster_expression.csv not available")
 
 # Load the chip file and convert to gene symbol
 chip = read_chip(args.chip_file)
-metacell_exp = convert_to_gene_symbol(chip, metacell_exp)
+cluster_exp = convert_to_gene_symbol(chip, cluster_exp)
 print("converted to gene symbol")
 
 # Load the gene set database files
 gs = pd.read_csv(args.gene_set_database_file, index_col = 0, header = None)
 
-print("loaded both metacell and gene set")
-
+print("Loaded both cluster expression and gene set database")
+print('==========================================================')
 scGSEA_scores = single_sample_gseas(
-    metacell_exp,
+    cluster_exp,
     gs,
     plot=True,
     title=None,
