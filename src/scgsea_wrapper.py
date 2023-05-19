@@ -15,6 +15,11 @@ parser.add_argument("--pyscript",
                     help="Python script",
                     default='False')
 
+parser.add_argument("--helper_functions",
+                    type=str, 
+                    help="Python script",
+                    default='False')
+
 # ~~~~Module Required Arguments~~~~~ #
 parser.add_argument("--input_file",
                     type=str,
