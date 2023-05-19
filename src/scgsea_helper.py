@@ -92,7 +92,7 @@ def convert_to_gene_symbol(chip, exp):
     collapsed_df = joined_df.groupby(["Gene Symbol"]).max()
     return collapsed_df
 
-def write_gct(out_matrix, file_name):
+def write_gct(out_matrix, filename):
     text_file = open(filename + ".gct", "w")
     text_file.write('#1.2\n')
     text_file.write(str(len(out_matrix)) + "\t" +
