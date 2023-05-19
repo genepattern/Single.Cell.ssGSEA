@@ -19,7 +19,7 @@ parser <- add_option(parser, c("--input_file"), help = "RDS file to load.")
 
 # ====================================
 # parameter for the output file name
-parser <- add_option(parser, c("--output_file_name"),type='character',default='scGSEA_scores', help = "Basename of the file to be saved.")
+# parser <- add_option(parser, c("--output_file_name"),type='character',default='scGSEA_scores', help = "Basename of the file to be saved.")
 # ====================================
 
 print('==========================================================')
@@ -28,7 +28,7 @@ print('Parameters used:')
 print(args)
 print('==========================================================')
 # Setting up the PDF file for the plots
-pdf(file=paste(args$output_file_name,'.pdf',sep=''))
+# pdf(file=paste(args$output_file_name,'.pdf',sep=''))
 
 # Processing how to merge plots
 
@@ -64,4 +64,4 @@ print("Saving metacell average expression profile.")
 print('==========================================================')
 write.csv(aggregatedObj, file = "metacell_expression.csv", row.names = TRUE)
 
-dev.off() # Close the PDF file
+#dev.off() # Close the PDF file
