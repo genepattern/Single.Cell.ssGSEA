@@ -2,10 +2,18 @@ import subprocess
 import argparse
 import os
 
+current_directory = os.getcwd()
+print(current_directory)
+
+file_list = os.listdir()
+for file_name in file_list:
+  print(file_name)
+
 if os.path.exists('normalize_and_aggregate.R'):
   print("found it")
 if os.path.exists('scgsea.py'):
   print("found it")
+print("NOT FOUND")
 
 
 # parser = argparse.ArgumentParser()
