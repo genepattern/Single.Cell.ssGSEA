@@ -4,15 +4,16 @@ from scgsea_helper import *
 import argparse
 import humanfriendly
 import pandas as pd
+import os
 from timeit import default_timer as timer
 beginning_of_time = timer()
 
 parser = argparse.ArgumentParser()
 # ~~~~Module Required Arguments~~~~~ #
-parser.add_argument("--input_file",
-                    type=str,
-                    help="Input file",
-                    default='False')
+# parser.add_argument("--input_file",
+#                     type=str,
+#                     help="Input file",
+#                     default='False')
 
 parser.add_argument("--gene_set_database_file",
                     type=str,
@@ -40,16 +41,17 @@ print("Now getting work done.")
 print("~~~~~~~~~~~~~~~~~~~~~~")
 
 # Open the input file
-# print("About to read the metacell expression")
-# if os.path.exists("metacell_expression.csv"):
-#   metacell_exp = pd.read_csv("metacell_expression.csv", index_col = 0)
-# print(metacell_exp)
+print("About to read the metacell expression")
+if os.path.exists("metacell_expression.csv"):
+  metacell_exp = pd.read_csv("metacell_expression.csv", index_col = 0)
+else:
+  print("metacell_expression.csv not available")
 
 # # Open the output file
 # out_filename = args.output_filename
 
 # Load the metacell expression data
-metacell_exp = pd.read_csv(args.input_file, index_col = 0)
+# metacell_exp = pd.read_csv(args.input_file, index_col = 0)
 
 # Load the chip file and convert to gene symbol
 chip = read_chip(args.chip_file)
