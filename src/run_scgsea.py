@@ -46,15 +46,14 @@ else:
 print("Loading CHIP file to convert to Gene Symbol")
 print('==========================================================')
 chip = read_chip(args.chip_file)
-chip.to_csv("chip_file.csv") # TEST
 cluster_exp = convert_to_gene_symbol(chip, cluster_exp)
-cluster_exp.to_csv("converted_cluster_exp.csv") # TEST
 print("Loaded CHIP file!\n")
 
 # Load the gene set database files
 print(f"Loading {args.gene_set_database_file} to convert to Gene Symbol")
 print('==========================================================')
 gs = pd.read_csv(args.gene_set_database_file, index_col = 0, header = None)
+gs.to_csv("geneset_loaded.csv") # Test
 print("Loaded gene set file!\n")
 
 print("Running scGSEA...")
