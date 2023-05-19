@@ -111,3 +111,44 @@ def write_gct(out_matrix, filename):
     # Save as a csv file
     out_matrix.to_csv(filename + ".csv", sep="\t", mode='w')
     
+def read_gmt(gs_db, thres_min=2, thres_max=2000):
+    with open(gs_db) as f:
+        temp=f.read().splitlines()
+    max_Ng=len(temp)
+    # temp_size_G will contain size of each gene set
+    temp_size_G=list(range(max_Ng))
+    for i in range(max_Ng):
+        temp_size_G[i]=len(temp[i].split("\t")) - 2
+    max_size_G=max(temp_size_G)
+    gs=pandas.DataFrame(numpy.nan, index=range(max_Ng), columns=range(max_size_G))
+    temp_names=list(range(max_Ng))
+    temp_desc=list(range(max_Ng))
+    gs_count=0
+    for i in range(max_Ng):
+        gene_set_size=len(temp[i].split("\t")) - 2
+        gs_line=temp[i].split("\t")
+        gene_set_name=gs_line[0]
+        gene_set_desc=gs_line[1]
+        gene_set_tags=list(range(gene_set_size))
+        for j in range(gene_set_size):
+            gene_set_tags[j]=gs_line[j + 2]
+        if numpy.logical_and(gene_set_size >= thres_min, gene_set_size <= thres_max):
+            temp_size_G[gs_count]=gene_set_size
+            gs.iloc[gs_count]=gene_set_tags + \
+                list(numpy.full((max_size_G - temp_size_G[gs_count]), numpy.nan))
+            temp_names[gs_count]=gene_set_name
+            temp_desc[gs_count]=gene_set_desc
+            gs_count=gs_count + 1
+    Ng=gs_count
+    gs_names=list(range(Ng))
+    gs_desc=list(range(Ng))
+    size_G=list(range(Ng))
+    gs_names=temp_names[0:Ng]
+    gs_desc=temp_desc[0:Ng]
+    size_G=temp_size_G[0:Ng]
+    gs.dropna(how='all', inplace=True)
+    gs.index=gs_names
+    return gs
+#    return {'N_gs': Ng, 'gs': gs, 'gs_names': gs_names, 'gs_desc': gs_desc, 'size_G': size_G, 'max_N_gs': max_Ng}
+
+# def read_gmts(gs_dbs)
