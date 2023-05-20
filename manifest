@@ -1,13 +1,13 @@
-# scGSEA  urn:lsid:8080.gpserver.ip-172-31-26-71.ip-172-31-26-71.ec2.internal:genepatternmodules:685:49
-#Sat May 20 03:50:12 UTC 2023
+# scGSEA  urn:lsid:8080.gpserver.ip-172-31-26-71.ip-172-31-26-71.ec2.internal:genepatternmodules:685:0.2
+#Sat May 20 05:15:57 UTC 2023
 JVMLevel=
-LSID=urn\:lsid\:8080.gpserver.ip-172-31-26-71.ip-172-31-26-71.ec2.internal\:genepatternmodules\:685\:49
+LSID=urn\:lsid\:8080.gpserver.ip-172-31-26-71.ip-172-31-26-71.ec2.internal\:genepatternmodules\:685\:0.2
 author=John Jun;UCSD - Mesirov Lab
 commandLine=python3 <libdir>scgsea_wrapper.py --rscript /scripts/preprocess.R --pyscript /scripts/run_scgsea.py  --helper_functions /scripts/scgsea_helper.py --input_file <input_file> --gene_set_database_file <gene_set_database_file> --output_file_name <output_file_name> --chip_file <chip_file>
 cpuType=any
 description=Perform scGSEA for clusters in the data. To be used after Seurat.Clustering
 documentationUrl=
-fileFormat=.gct;txt,gct
+fileFormat=.csv;.gct
 job.cpuCount=
 job.docker.image=johnjun094/scgsea\:0.1.7
 job.memory=
@@ -61,20 +61,20 @@ p4_choiceDir=ftp\://ftp.broadinstitute.org/pub/gsea/annotations_versioned/
 p4_choiceDirFilter=*.chip
 p4_choices=ftp\://ftp.broadinstitute.org/pub/gsea/annotations_versioned/
 p4_default_value=
-p4_description=Chip file containing Gene ID to Gene Symbol mappings. 
+p4_description=CHIP file containing Gene ID to Gene Symbol mappings
 p4_fileFormat=chip
 p4_flag=chip_file
 p4_name=chip_file
 p4_numValues=0..1
-p4_optional=on
+p4_optional=
 p4_prefix=
 p4_prefix_when_specified=
 p4_type=java.io.File
 p4_value=
 privacy=private
 quality=preproduction
-src.repo=
+src.repo=https\://github.com/JohnSpJun/scGSEA/tree/main/src
 taskDoc=
 taskType=
 userid=johnjun094
-version=test
+version=beta
