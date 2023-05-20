@@ -2,10 +2,9 @@
 #NB - all of these import statements should specify their versions and be executed in a separate script at Docker build time.
 
 import pandas as pd
-import numpy
+import numpy as np
 import warnings
 from numpy import absolute, in1d, sort
-
 
 # ssGSEA code from PheNMF repository
 def single_sample_gsea(
@@ -121,7 +120,7 @@ def read_gmt(gs_db, thres_min=2, thres_max=2000):
     for i in range(max_Ng):
         temp_size_G[i]=len(temp[i].split("\t")) - 2
     max_size_G=max(temp_size_G)
-    gs=pd.DataFrame(numpy.nan, index=range(max_Ng), columns=range(max_size_G))
+    gs=pd.DataFrame(np.nan, index=range(max_Ng), columns=range(max_size_G))
     temp_names=list(range(max_Ng))
     temp_desc=list(range(max_Ng))
     gs_count=0
@@ -133,10 +132,10 @@ def read_gmt(gs_db, thres_min=2, thres_max=2000):
         gene_set_tags=list(range(gene_set_size))
         for j in range(gene_set_size):
             gene_set_tags[j]=gs_line[j + 2]
-        if numpy.logical_and(gene_set_size >= thres_min, gene_set_size <= thres_max):
+        if np.logical_and(gene_set_size >= thres_min, gene_set_size <= thres_max):
             temp_size_G[gs_count]=gene_set_size
             gs.iloc[gs_count]=gene_set_tags + \
-                list(numpy.full((max_size_G - temp_size_G[gs_count]), numpy.nan))
+                list(np.full((max_size_G - temp_size_G[gs_count]), np.nan))
             temp_names[gs_count]=gene_set_name
             temp_desc[gs_count]=gene_set_desc
             gs_count=gs_count + 1
