@@ -1,33 +1,18 @@
-### copyright 2017-2021 Regents of the University of California and the Broad Institute. All rights reserved.
-FROM genepattern/docker-python36:0.4
+### copyright 203-2023. GenePattern Team @ Mesirov Lab - University of California, San Diego. All rights reserved.
+#
+# Currently, module uses genepattern/seurat-suite:4.0.3 image.
+FROM genepattern/seurat-suite:4.0.3
 
-MAINTAINER Barbara Hill <bhill@broadinstitute.org>
+LABEL maintainer="John Jun johnjun094@cloud.ucsd.edu"
 
-# While you are debugging/iterating over your module code in the Module integrator comment out the secion below.
-# When you are done, export your module, unzip and move your source files into the src directory in this local workspace.
-# Then, update this section for you module and build using the docker build command below - again updated for your module.
-# Note that you only need to add gpuser if you base image (the image specified in FROM) is run as root. If it runs as another user, you may need to become root (USER root) to add folders...etc. Just make sure to switch back to the non-root user before exiting.
-# -----------------------------------
-#creating a non-root user - see above
-RUN useradd -ms /bin/bash gpuser
-USER gpuser
-WORKDIR /home/gpuser
-
-#switch back to root to create dir
 USER root
-RUN mkdir /ExampleModule \
-    && chown gpuser /ExampleModule
 
-#switch to non-root before exiting so that we don't run as root on the server, and copy all of the src files into the container.
-USER gpuser
-COPY src/*.py /ExampleModule/
+RUN pip3 install tqdm==4.65.0 numpy==1.23.1 matplotlib==3.6.1 scanpy==1.9.1 pandas==1.4.4 anndata==0.8.0 \
+    seaborn==0.12.0 scipy==1.9.2 networkx==2.8.7 xlsxwriter==3.0.3 openpyxl==3.0.9 mygene==3.2.2 humanfriendly==10.0
 
-RUN /ExampleModule/ExampleModule.py
-# -----------------------------------
+RUN Rscript -e "install.packages('optparse', version='1.7.3', repos='http://cran.us.r-project.org')"
 
-# docker build --rm https://github.com/genepattern/ExampleModule.git#develop -f Dockerfile -t genepattern/example-module:<tag>
-# make sure this repo and tag match the manifest & don't forget to docker push!
-# docker push genepattern/example-module:<tag>
-
-# you can use this command to run Docker and iterate locally (update for your paths and module name, of course)
-# docker run --rm -it --user gpuser -v /c/Users/MyUSER/PathTo/ExampleModule:/mnt/mydata:rw genepattern/example-module:<tag> bash
+# COPY R and Python scripts
+RUN mkdir /scripts
+COPY run_scgsea.py preprocess.R scgsea_helper.py /scripts/
+RUN chmod a+rwx /scripts/*
