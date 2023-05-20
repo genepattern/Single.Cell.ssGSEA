@@ -155,5 +155,6 @@ def read_gmts(gs_dbs):
     gs = pd.DataFrame()
     with open(gs_dbs, "r") as file:
         for gs_db in file:
+            gs_db = gs_db.rstrip('\n')
             gs = pd.concat([gs, read_gmt(gs_db)], ignore_index=False)
     return gs
