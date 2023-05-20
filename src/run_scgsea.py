@@ -54,9 +54,6 @@ print(f"Loading {args.gene_set_database_file} to convert to Gene Symbol")
 print('==========================================================')
 # if args.gene_set_database_file.endswith(".txt"):
 gs = read_gmts(args.gene_set_database_file)
-# elif args.gene_set_database_file.endswith(".gmt"):
-#   gs = read_gmt(args.gene_set_database_file)
-gs.to_csv("geneset_loaded.csv") # Test
 print("Loaded gene set file!\n")
 
 print("Running scGSEA...")
