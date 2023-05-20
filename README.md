@@ -1,6 +1,6 @@
 # scGSEA
 
-This module performs scGSEA (single-cell GSEA) for single cell transcriptomics data. This module is intended to be used subsequent to [Seurat.Clustering](https://github.com/genepattern/Seurat.Clustering) module and the user can supply the Seurat RDS file from the Seurat.Clustering module.
+This module performs scGSEA (single-cell GSEA) for single cell transcriptomics data. This module is intended to be used subsequent to [Seurat.Clustering](https://github.com/genepattern/Seurat.Clustering) module and the user can supply the Seurat RDS file.
 
 The scGSEA score can be used to identify the biological mechanism and in downstream visualzations.
 
