@@ -153,6 +153,7 @@ def read_gmt(gs_db, thres_min=2, thres_max=2000):
 
 def read_gmts(gs_dbs):
     gs = pd.DataFrame()
-    for gs_db in gs_dbs:
-        gs = pd.concat([gs, read_gmt(gs_db)], ignore_index=False)
+    with open(gs_dbs, "r") as file:
+        for gs_db in file:
+            gs = pd.concat([gs, read_gmt(gs_db)], ignore_index=False)
     return gs
