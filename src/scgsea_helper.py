@@ -7,7 +7,7 @@ import warnings
 from numpy import absolute, in1d, sort
 
 
-# Here is where I'd put my functions, if I had any!
+# ssGSEA code from PheNMF repository
 def single_sample_gsea(
     gene_score,
     gene_set_genes,
@@ -66,22 +66,22 @@ def single_sample_gseas(
     html_file_path=None,
     plotly_html_file_path=None,
 ):
-    perm_scores = {
+    scgsea_scores = {
         gs_name: []
         for gs_name in gene_sets.index
     }
     
     for i, metacell in enumerate(gene_scores.columns):
         for gs_name in gene_sets.index:
-            perm_scores[gs_name].append(
+            scgsea_scores[gs_name].append(
                 single_sample_gsea(
                     gene_score = gene_scores[metacell],
                     gene_set_genes = gene_sets.loc[gs_name,:].dropna()
                 )
             )
-    perm_scores = pd.DataFrame(perm_scores).T
-    perm_scores.columns = [gene_scores.columns]
-    return perm_scores
+    scgsea_scores = pd.DataFrame(scgsea_scores).T
+    scgsea_scores.columns = [gene_scores.columns]
+    return scgsea_scores
 
 def read_chip(chip):
     chip_df=pd.read_csv(chip, sep='\t', index_col=0, skip_blank_lines=True)
@@ -152,4 +152,8 @@ def read_gmt(gs_db, thres_min=2, thres_max=2000):
     return gs
 #    return {'N_gs': Ng, 'gs': gs, 'gs_names': gs_names, 'gs_desc': gs_desc, 'size_G': size_G, 'max_N_gs': max_Ng}
 
-# def read_gmts(gs_dbs)
+def read_gmts(gs_dbs):
+    gs = pd.DataFrame()
+    for gs_db in gs_dbs:
+        gs = pd.concat([gs, read_gmt(gs_db)], ignore_index=False)
+    return gs
