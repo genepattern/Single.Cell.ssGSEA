@@ -1,6 +1,6 @@
 <!-- remove all comments before releasing -->
 <!-- This is the name of the module as it will appear in GenePatter, and its version, for clarity -->
-# scGSEA (v1)
+# scGSEA
 
 <!-- A brief text description of the module, usually one sentence in length. -->
 **Description**: scGSEA is an extension of ssGSEA designed to improve the assessment of pathway activity in single-cell data by addressing sparsity and ensuring stable enrichment scoring.
