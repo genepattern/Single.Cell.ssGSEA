@@ -49,10 +49,10 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 
 | Name | Description <!--short description--> | Default Value |
 ---------|--------------|----------------
-| filename * |  The file to be read in txt format |
-| add_custom_message * | Whether or not to add a custom message. | False |
-| message_to_add  | What message to add (if any) |
-| output_filename * | The basename to use for output file (no need to add ".txt" at the end) |
+| input_file * |  File to be read in RDS format |
+| chip_file  | Chip file used for conversion to gene symbols |
+| gene_set_database_file *  | Gene set data in GMT format |
+| output_file_name * | The basename to use for output file | scGSEA_scores
 
 \*  required
 
