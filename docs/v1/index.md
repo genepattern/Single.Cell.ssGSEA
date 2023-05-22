@@ -3,7 +3,7 @@
 # scGSEA (v1)
 
 <!-- A brief text description of the module, usually one sentence in length. -->
-**Description**: Performs single sample GSEA for single cell data
+**Description**: scGSEA is an extension of ssGSEA designed to improve the assessment of pathway activity in single-cell data by addressing sparsity and ensuring stable enrichment scoring.
 
 <!-- This field is for the author or creator of the module. If the algorithm of the module is from a published paper, this is usually the first or corresponding author from the paper. If the module algorithm is unpublished, this is usually the developer of the module itself. This field can simply be a name of a person or group. -->
 **Authors**: John Jun; UCSD - Mesirov Lab, UCSD
@@ -62,7 +62,7 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 1. input_file  
     This is the Seurat RDS file from the Seurat.Clustering module which will be read in.
 2. chip_file
-    
+    * This parameter’s drop-down allows you to select CHIP files from the [Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) on the GSEA website. This drop-down provides access to only the most current version of MSigDB. You can also upload your own gene set file(s) in [CHIP](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#CHIP:_Chip_file_format_.28.2A.chip.29)
 3. gene_set_database_file
     * This parameter’s drop-down allows you to select gene sets from the [Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) on the GSEA website. This drop-down provides access to only the most current version of MSigDB. You can also upload your own gene set file(s) in [GMT](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29) format.
     * If you want to use files from an earlier version of MSigDB you will need to download them from the archived releases on the [website](https://www.gsea-msigdb.org/gsea/downloads.jsp).
