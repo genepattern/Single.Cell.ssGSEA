@@ -59,16 +59,25 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 ## Input Files
 <!-- longer descriptions of the module input files. Include information about format and/or preprocessing...etc -->
 
-1. filename  
-    A long form explanation of the parameter. For example: This is the file which will be read in by the python script and to which text will be added, if add_custom_message is set to true. The parameter expects a text file with a .txt extension (e.g. file.txt)
+1. input_file  
+    This is the Seurat RDS file from the Seurat.Clustering module which will be read in.
+2. chip_file
+    
+3. gene_set_database_file
+    * This parameter’s drop-down allows you to select gene sets from the [Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) on the GSEA website. This drop-down provides access to only the most current version of MSigDB. You can also upload your own gene set file(s) in [GMT](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29) format.
+    * If you want to use files from an earlier version of MSigDB you will need to download them from the archived releases on the [website](https://www.gsea-msigdb.org/gsea/downloads.jsp).
+4. output_file_name
+    The prefix used for the name of the output GCT and CSV file. If unspecified, output prefix will be set to <prefix of input RDS file>_scGSEA_scores.gct. The output GCT file will contain the projection of input dataset onto a space of gene set enrichments scores.
     
 ## Output Files
 <!-- list and describe any files output by the module -->
 
-1. \<output_filename\>.txt
-    The input file plus any text you added, if you chose to add text.
-2. stdout.txt
-    This is standard output from the Python script. Sometimes helpful for debugging.
+1. \<output_file_name\>.csv   
+    This is a gene set by cell cluster data consisted of scGSEA scores. 
+2. \<output_file_name\>.gct
+    This is a gene set by cell cluster data consisted of scGSEA scores. The HeatmapViewer module can accept this file as input for generating heatmap visualizations.
+3. stdout.txt  
+    This is standard output from the script.
 
 ## Example Data
 <!-- provide links to example data so that users can see what input & output should look like and so that they and we can use it to test -->
