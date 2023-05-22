@@ -83,10 +83,8 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 <!-- provide links to example data so that users can see what input & output should look like and so that they and we can use it to test -->
 
 Input:  
-[data_placeholder.txt](https://github.com/genepattern/ExampleModule/blob/v2/data/data_placeholder.txt)
 
 Output:  
-[created_file_ground_truth.txt](https://github.com/genepattern/ExampleModule/blob/v2/gpunit/output/basic_test/created_file_ground_truth.txt)
 
 ## Platform Dependencies
 Task Type:
