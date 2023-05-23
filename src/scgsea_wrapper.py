@@ -41,11 +41,18 @@ parser.add_argument("--chip_file",
                     help="chip file",
                     default='False')
 
+# For when aggregating cells not using the annotation from Seurat.Clustering module
+# parser.add_argument("--cluster_data",
+#                     type=str,
+#                     help="Name of the metadata to be used for aggregating cells",
+#                     default="seurat_clusters")
+
 args = parser.parse_args()
 
 print('==========================================================')
 print("Proprocessing the RDS data...")
 print('==========================================================')
+# r_command = ['Rscript', args.rscript, "--input_file", args.input_file, "--cluster_data", args.cluster_data]
 r_command = ['Rscript', args.rscript, "--input_file", args.input_file]
 subprocess.run(r_command)
 print("Finished Preprocessing!\n")
