@@ -104,4 +104,4 @@ R-3.2, Python 3.9
 
 | Version | Release Date | Description                                 |
 ----------|--------------|---------------------------------------------|
-| 1 | May 09, 2023 | Initial version |
+| 1 | May 21, 2023 | Preproduction version |
