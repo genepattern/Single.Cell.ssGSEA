@@ -48,4 +48,4 @@ scGSEA is an extension of ssGSEA tailored for single-cell data analysis. It addr
 3. `stdout.txt`  
     This is standard output from the script.
 
-For more details, please refer to the full documentation.
+For more details, please refer to the [full documentation](https://github.com/JohnSpJun/scGSEA/blob/main/docs/documentation.md).
