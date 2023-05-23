@@ -34,17 +34,18 @@ cat(args$input_file)
 print("has been read to memory!")
 
 # Normalize the raw data
-print("Normalizing the data")
+print("Normalizing the data...")
 print('==========================================================')
-SeuratObj <- NormalizeData(SeuratObj, normalization.method = "CLR", margin = 2)
+SeuratObj <- NormalizeData(SeuratObj, normalization.method = "CLR", margin = 2, verbose = TRUE)
+print("Normalizing complete!")
 
 # Group by metacell 
-print("Aggregating the cells by clusters")
+print("Aggregating cells by clusters...")
 print('==========================================================')
 aggregatedObj <- AverageExpression(SeuratObj, group.by = "seurat_clusters", use.raw = FALSE)
+print("Aggregating cells by clusters complete!")
 
-print("Saving metacell average expression profile.")
+print("Saving metacell average expression profile...")
 print('==========================================================')
 write.csv(aggregatedObj, file = "cluster_expression.csv", row.names = TRUE)
-
-#dev.off() # Close the PDF file
+print("cluster_expression.csv file saved!")
