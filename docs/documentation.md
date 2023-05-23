@@ -40,9 +40,9 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 <!-- links to your source repository **specific to the release version**, the Docker image used by the module (as specified in your manifest), and (if applicable) the sha link to the Dockerfile used to build your Docker image -->
 
 ## Source Links
-* [The GenePattern ExampleModule v2 source repository](https://github.com/genepattern/scGSEA/)
-* scGSEA uses the [genepattern/scgsea:2 Docker image](https://hub.docker.com/layers/150060459/genepattern/example-module/2/images/sha256-ae4fffff67672e46b251f954ad226b7ad99403c456c1c19911b6ac82f1a27f2f?context=explore)
-* The Dockerfile used to build that image is [here.](https://github.com/genepattern/scgsea/docs/Dockerfile)
+* [The GenePattern scGSEA module source repository](https://github.com/genepattern/scGSEA/)
+<!-- * scGSEA uses the [genepattern/scgsea Docker image](https://hub.docker.com/layers/150060459/genepattern/example-module/2/images/sha256-ae4fffff67672e46b251f954ad226b7ad99403c456c1c19911b6ac82f1a27f2f?context=explore)
+* The Dockerfile used to build that image is [here.](https://github.com/genepattern/scgsea/docs/Dockerfile) -->
 
 ## Parameters
 <!-- short description of the module parameters and their default values, as well as whether they are required -->
