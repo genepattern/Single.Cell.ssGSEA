@@ -82,10 +82,6 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 ## Example Data
 <!-- provide links to example data so that users can see what input & output should look like and so that they and we can use it to test -->
 
-Input:  
-
-Output:  
-
 ## Platform Dependencies
 Task Type:
 Projection
