@@ -1,5 +1,7 @@
 ### copyright 203-2023. GenePattern Team @ Mesirov Lab - University of California, San Diego. All rights reserved.
-#
+# 
+# To build the image use the command below:
+# DOCKER_BUILDKIT=1 docker build --platform linux/amd64 -f Dockerfile -t <scgsea tag name> .
 # Currently, module uses genepattern/seurat-suite:4.0.3 image.
 FROM genepattern/seurat-suite:4.0.3
 
