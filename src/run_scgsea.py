@@ -43,11 +43,12 @@ else:
   print("cluster_expression.csv not available")
 
 # Load the chip file and convert to gene symbol
-print("Loading CHIP file to convert to Gene Symbol")
-print('==========================================================')
-chip = read_chip(args.chip_file)
-cluster_exp = convert_to_gene_symbol(chip, cluster_exp)
-print("Loaded CHIP file!\n")
+if args.chip_file:
+  print("Loading CHIP file to convert to Gene Symbol")
+  print('==========================================================')
+  chip = read_chip(args.chip_file)
+  cluster_exp = convert_to_gene_symbol(chip, cluster_exp)
+  print("Loaded CHIP file!\n")
 
 # Load the gene set database files
 print(f"Loading {args.gene_set_database_file} to convert to Gene Symbol")
