@@ -36,8 +36,7 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 ## References
 1. Subramanian, A., Tamayo, P., Mootha, V. K., Mukherjee, S., Ebert, B. L., Gillette, M. A., et al. (2005). Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. Proceedings of the National Academy of Sciences of the United States of America, 102(43), 15545-15550. http://doi.org/10.1073/pnas.0506580102
 
-2. Reich, M., Liefeld, T., Gould, J., Lerner, J., Tamayo, P., & Mesirov, J. P. (2006). GenePattern 2.0. Nature Genetics, 38(5), 500-501. https://doi.org/10.1038/ng0506-500
-<!-- links to your source repository **specific to the release version**, the Docker image used by the module (as specified in your manifest), and (if applicable) the sha link to the Dockerfile used to build your Docker image -->
+2. Barbie, D. A., Tamayo, P., Boehm, J. S., et al. (2009). Systematic RNA interference reveals that oncogenic KRAS-driven cancers require TBK1. Nature. 2009;462:108-112. http://doi.org/10.1038/nature08460
 
 ## Source Links
 * [The GenePattern scGSEA module source repository](https://github.com/genepattern/scGSEA/)
@@ -59,7 +58,7 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 ## Input Files
 <!-- longer descriptions of the module input files. Include information about format and/or preprocessing...etc -->
 
-1. `input_file`
+1. `input_file`  
     This is the Seurat RDS file from the Seurat.Clustering module.
 2. `chip_file`  
     This parameter’s drop-down allows you to select CHIP files from the [Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) on the GSEA website. This drop-down provides access to only the most current version of MSigDB. You can also upload your own gene set file(s) in [CHIP](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#CHIP:_Chip_file_format_.28.2A.chip.29) format.
@@ -81,6 +80,12 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 
 ## Example Data
 <!-- provide links to example data so that users can see what input & output should look like and so that they and we can use it to test -->
+Input:  
+[Seurat RDS file](https://datasets.genepattern.org/data/test_data/scGSEA/local.clustered.rds)
+
+Output:  
+[scgsea_scores.csv]()
+[scgsea_scores.gct]()
 
 ## Platform Dependencies
 Task Type:
