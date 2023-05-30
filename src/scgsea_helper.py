@@ -3,8 +3,10 @@
 
 import pandas as pd
 import numpy as np
-import warnings
-from numpy import absolute, in1d, sort
+from numpy import absolute, in1d, nan, full
+from numpy.random import seed
+from warnings import warn
+from multiprocessing.pool import Pool
 
 # ssGSEA code from PheNMF repository
 def single_sample_gsea(
@@ -52,36 +54,6 @@ def single_sample_gsea(
 
     return score
 
-# Run multiple ssGSEAs
-def single_sample_gseas(
-    gene_scores,
-    gene_sets,
-    plot=True,
-    title=None,
-    gene_score_name=None,
-    annotation_text_font_size=16,
-    annotation_text_width=88,
-    annotation_text_yshift=64,
-    html_file_path=None,
-    plotly_html_file_path=None,
-):
-    scgsea_scores = {
-        gs_name: []
-        for gs_name in gene_sets.index
-    }
-    
-    for i, metacell in enumerate(gene_scores.columns):
-        for gs_name in gene_sets.index:
-            scgsea_scores[gs_name].append(
-                single_sample_gsea(
-                    gene_score = gene_scores[metacell],
-                    gene_set_genes = gene_sets.loc[gs_name,:].dropna()
-                )
-            )
-    scgsea_scores = pd.DataFrame(scgsea_scores).T
-    scgsea_scores.columns = [gene_scores.columns]
-    return scgsea_scores
-
 def read_chip(chip):
     chip_df=pd.read_csv(chip, sep='\t', index_col=0, skip_blank_lines=True)
     return chip_df
@@ -91,25 +63,22 @@ def convert_to_gene_symbol(chip, exp):
     joined_df.reset_index(drop=True, inplace=True)
     annotations = joined_df[["Gene Symbol", "Gene Title"]].drop_duplicates().copy()
     joined_df.drop("Gene Title", axis = 1, inplace = True)
-    collapsed_df = joined_df.groupby(["Gene Symbol"]).max()
+
+    # Collapse the expression of duplicate genes using the sum of expression
+    collapsed_df = joined_df.groupby(["Gene Symbol"]).sum()
     return collapsed_df
 
-def write_gct(out_matrix, filename):
+def write_gct(out_matrix, filename, gs_desc):
+    # Add "Description" column 
+    out_matrix.insert(0, "Description", gs_desc)
+
     text_file = open(filename + ".gct", "w")
-    text_file.write('#1.2\n')
-    text_file.write(str(len(out_matrix)) + "\t" +
-                        str(len(out_matrix.columns) - 1) + "\n")
-    text_file.close()
-    
-    # Change the column names from RNA.<cluster_number> to cluster<cluster_number>
-    column_count = len(out_matrix.columns)
-    new_cols = ['cluster' + str(i) for i in range(1, column_count + 1)]
-    out_matrix.columns = new_cols
-    
-    # Save as a gct file
-    out_matrix.to_csv(filename + ".gct", sep="\t", mode='a')
-    # Save as a csv file
-    out_matrix.to_csv(filename + ".csv", sep="\t", mode='w')
+    text_file.write('#1.2\n' + str(len(out_matrix)) + "\t" +
+                        str(len(out_matrix.columns)-1) + "\n")
+
+    # Save GCT file
+    out_matrix.to_csv(text_file, sep="\t", index_label = "NAME", mode='a')
+    print("Saved scGSEA score result in .gct format")
     
 def read_gmt(gs_db, thres_min=2, thres_max=2000):
     with open(gs_db) as f:
@@ -148,13 +117,99 @@ def read_gmt(gs_db, thres_min=2, thres_max=2000):
     size_G=temp_size_G[0:Ng]
     gs.dropna(how='all', inplace=True)
     gs.index=gs_names
-    return gs
+    return gs, gs_desc
 #    return {'N_gs': Ng, 'gs': gs, 'gs_names': gs_names, 'gs_desc': gs_desc, 'size_G': size_G, 'max_N_gs': max_Ng}
 
 def read_gmts(gs_dbs):
     gs = pd.DataFrame()
+    gs_desc = []
     with open(gs_dbs, "r") as file:
         for gs_db in file:
             gs_db = gs_db.rstrip('\n')
-            gs = pd.concat([gs, read_gmt(gs_db)], ignore_index=False)
-    return gs
+            gs_temp, gs_desc_temp = read_gmt(gs_db)
+            gs = pd.concat([gs, gs_temp], ignore_index=False)
+            gs_desc.extend(gs_desc_temp)
+    return gs, gs_desc
+
+## utilities from ccal
+def split_df(df, axis, n_split):
+
+    if not (0 < n_split <= df.shape[axis]):
+        raise ValueError(
+            "Invalid: 0 < n_split ({}) <= n_slices ({})".format(n_split, df.shape[axis])
+        )
+    n = df.shape[axis] // n_split
+    dfs = []
+    for i in range(n_split):
+        start_i = i * n
+        end_i = (i + 1) * n
+
+        if axis == 0:
+            dfs.append(df.iloc[start_i:end_i])
+        elif axis == 1:
+            dfs.append(df.iloc[:, start_i:end_i])
+    i = n * n_split
+
+    if i < df.shape[axis]:
+        if axis == 0:
+            dfs.append(df.iloc[i:])
+        elif axis == 1:
+            dfs.append(df.iloc[:, i:])
+    return dfs
+
+def multiprocess(callable_, args, n_job, random_seed=20121020):
+    seed(random_seed)
+    with Pool(n_job) as process:
+        return process.starmap(callable_, args)
+
+## From ccal (credit Kwat, Pablo)
+def _single_sample_gseas(gene_x_sample, gene_sets):
+    print("Running single-sample GSEA with {} gene sets ...".format(gene_sets.shape[0]))
+
+    score__gene_set_x_sample = full((gene_sets.shape[0], gene_x_sample.shape[1]), nan)
+    for sample_index, (sample_name, gene_score) in enumerate(gene_x_sample.items()):
+        for gene_set_index, (gene_set_name, gene_set_genes) in enumerate(
+            gene_sets.iterrows()
+        ):
+            score__gene_set_x_sample[gene_set_index, sample_index] = single_sample_gsea(
+                gene_score, gene_set_genes, plot=False
+            )
+    score__gene_set_x_sample = pd.DataFrame(
+        score__gene_set_x_sample, index=gene_sets.index, columns=gene_x_sample.columns
+    )
+    return score__gene_set_x_sample
+
+## Alex's function for parallelization
+def run_ssgsea_parallel(
+    gene_x_sample,
+    gene_sets,
+    n_job = 1,
+    file_path = None
+):
+    """
+    Wrapper around Kwat's ssGSEA except it parallelizes based on samples instead
+    of gene sets. The PheNMF uses case assumes #samples >>> #gene sets
+
+        gene_x_sample (pd.DataFrame): Matrix of genes by samples
+        gene_sets (pd.DataFrame): CCAL-style GMT representation
+        n_job (int): Number of processors to use
+        file_path (str|None): Path to store ssGSEA results if desired
+    """
+    score__gene_set_x_sample = pd.concat(
+        multiprocess(
+            _single_sample_gseas,
+            (
+                (gene_x_sample_, gene_sets)
+                for gene_x_sample_ in split_df(gene_x_sample, 1, min(gene_x_sample.shape[1], n_job))
+            ),
+            n_job,
+        ), sort = False, axis = 1
+    )
+
+    ## Assure columns come out in same order they came in
+    score__gene_set_x_sample = score__gene_set_x_sample[gene_x_sample.columns]
+
+    if file_path is not None:
+        score__gene_set_x_sample.to_csv(file_path, sep = '\t')
+
+    return score__gene_set_x_sample
