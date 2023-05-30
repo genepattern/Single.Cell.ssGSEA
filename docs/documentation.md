@@ -86,11 +86,11 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 ## Example Data
 <!-- provide links to example data so that users can see what input & output should look like and so that they and we can use it to test -->
 Input:  
-[Seurat RDS file](https://datasets.genepattern.org/data/test_data/scGSEA/local.clustered.rds)
+[Seurat RDS file](https://datasets.genepattern.org/data/test_data/scGSEA/local.clustered.rds)   
 [gene set database file](https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.1.Hs/h.all.v2023.1.Hs.symbols.gmt)
 
 Output:  
-[scgsea_scores.csv](https://github.com/genepattern/scGSEA/blob/develop/data/91737/scGSEA_scores.csv)
+[scgsea_scores.csv](https://github.com/genepattern/scGSEA/blob/develop/data/91737/scGSEA_scores.csv)   
 [scgsea_scores.gct](https://github.com/genepattern/scGSEA/blob/develop/data/91737/scGSEA_scores.gct)
 
 ## Platform Dependencies
