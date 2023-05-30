@@ -7,7 +7,6 @@ import os
 
 import humanfriendly
 from timeit import default_timer as timer
-beginning_of_time = timer()
 
 parser = argparse.ArgumentParser()
 # ~~~~Module Required Arguments~~~~~ #
@@ -23,8 +22,11 @@ parser.add_argument("--output_file_name",
 
 parser.add_argument("--chip_file",
                     type=str,
-                    help="Chip file",
-                    default='False')
+                    help="Chip file")
+
+parser.add_argument("--n_threads",
+                    type=int,
+                    help="number of CPUs")
 
 args = parser.parse_args()
 
@@ -49,28 +51,39 @@ if args.chip_file:
   chip = read_chip(args.chip_file)
   cluster_exp = convert_to_gene_symbol(chip, cluster_exp)
   print("Loaded CHIP file!\n")
+else:
+  print("Chip file not found -- Using the original gene identifiers without conversion")
 
 # Load the gene set database files
 print(f"Loading {args.gene_set_database_file} to convert to Gene Symbol")
 print('==========================================================')
 # if args.gene_set_database_file.endswith(".txt"):
-gs = read_gmts(args.gene_set_database_file)
+gs, gs_desc = read_gmts(args.gene_set_database_file)
 print("Loaded gene set file!\n")
 
+print("Number of gene sets loaded for scGSEA: {}".format(gs.shape[0]))
+
 print("Running scGSEA...")
-scGSEA_scores = single_sample_gseas(
+print('==========================================================')
+start = timer()
+scGSEA_scores = run_ssgsea_parallel(
     cluster_exp,
     gs,
-    plot=True,
-    title=None,
-    gene_score_name=None,
-    annotation_text_font_size=16,
-    annotation_text_width=88,
-    annotation_text_yshift=64,
-    html_file_path="{}_plot".format(args.output_file_name),
-    plotly_html_file_path=None)
+    n_job = args.n_threads,
+    file_path = None
+)
+end = timer()
 
-write_gct(scGSEA_scores, args.output_file_name)
+orig_name = scGSEA_scores.columns[0]
+if orig_name.startswith("RNA."):
+    column_count = len(scGSEA_scores.columns)
+    new_cols = ['cluster' + str(i) for i in range(1, column_count + 1)]
+    scGSEA_scores.columns = new_cols
 
-end_of_time = timer()
-print("We are done! Wall time elapsed:", humanfriendly.format_timespan(end_of_time - beginning_of_time))
+scGSEA_scores.to_csv(args.output_file_name + ".csv", sep="\t", mode = 'w')
+
+write_gct(scGSEA_scores, args.output_file_name, gs_desc)
+
+print("We are done!")
+
+print(f"scGSEA Runtime using {args.n_threads} CPUs: ", humanfriendly.format_timespan(end - start))
