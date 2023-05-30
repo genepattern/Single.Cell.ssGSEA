@@ -52,4 +52,4 @@ scGSEA is an extension of ssGSEA tailored for single-cell data analysis. It addr
 4. `stdout.txt`  
     This is standard output from the script.
 
-For more details, please refer to the [full documentation](https://github.com/JohnSpJun/scGSEA/blob/main/docs/documentation.md).
+For more details, please refer to the [full documentation](https://github.com/genepattern/scGSEA/blob/develop/docs/documentation.md).
