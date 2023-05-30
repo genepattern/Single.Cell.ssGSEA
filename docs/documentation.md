@@ -80,7 +80,7 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
     This is a gene set by cell cluster data consisted of scGSEA scores. The [HeatmapViewer module](https://github.com/genepattern/HeatMapViewer) can accept this file as input for generating heatmap visualizations.
 3. `cluster_expression.csv`   
     This is a gene by cell cluster data consisted of normalized gene expression level. 
-5. `stdout.txt`  
+4. `stdout.txt`  
     This is standard output from the script.
 
 ## Example Data
