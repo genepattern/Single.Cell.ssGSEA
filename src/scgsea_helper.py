@@ -195,16 +195,31 @@ def run_ssgsea_parallel(
         n_job (int): Number of processors to use
         file_path (str|None): Path to store ssGSEA results if desired
     """
-    score__gene_set_x_sample = pd.concat(
-        multiprocess(
-            _single_sample_gseas,
-            (
-                (gene_x_sample_, gene_sets)
-                for gene_x_sample_ in split_df(gene_x_sample, 1, min(gene_x_sample.shape[1], n_job))
-            ),
-            n_job,
-        ), sort = False, axis = 1
-    )
+    if n_job <= gene_x_sample.shape[1]:
+        print("Parallelizing scGSEA across cell clusters")
+        score__gene_set_x_sample = pd.concat(
+            multiprocess(
+                _single_sample_gseas,
+                (
+                    (gene_x_sample_, gene_sets)
+                    for gene_x_sample_ in split_df(gene_x_sample, 1, min(gene_x_sample.shape[1], n_job))
+                ),
+                n_job,
+            ), sort = False, axis = 1
+        )
+        
+    else:
+        print("Parallelizing scGSEA across gene sets")
+        score__gene_set_x_sample = pd.concat(
+            multiprocess(
+                _single_sample_gseas,
+                (
+                    (gene_x_sample, gene_sets_)
+                    for gene_sets_ in split_df(gene_sets, 0, min(gene_sets.shape[0], n_job))
+                ),
+                n_job,
+            ), sort = False, axis = 0
+        )
 
     ## Assure columns come out in same order they came in
     score__gene_set_x_sample = score__gene_set_x_sample[gene_x_sample.columns]
