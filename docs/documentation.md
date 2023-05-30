@@ -77,7 +77,7 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 1. `<output_file_name>.csv`   
     This is a gene set by cell cluster data consisted of scGSEA scores. 
 2. `<output_file_name>.gct`   
-    This is a gene set by cell cluster data consisted of scGSEA scores. The HeatmapViewer module can accept this file as input for generating heatmap visualizations.
+    This is a gene set by cell cluster data consisted of scGSEA scores. The [HeatmapViewer module](https://github.com/genepattern/HeatMapViewer) can accept this file as input for generating heatmap visualizations.
 3. `cluster_expression.csv`   
     This is a gene by cell cluster data consisted of normalized gene expression level. 
 5. `stdout.txt`  
