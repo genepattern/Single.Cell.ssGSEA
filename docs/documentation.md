@@ -67,6 +67,8 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
     * If you want to use files from an earlier version of MSigDB you will need to download them from the archived releases on the [website](https://www.gsea-msigdb.org/gsea/downloads.jsp).
 5. `output_file_name`  
     The prefix used for the name of the output GCT and CSV file. If unspecified, output prefix will be set to \<prefix of input RDS file\>_scGSEA_scores.gct. The output GCT file will contain the projection of input dataset onto a space of gene set enrichments scores.
+6. `cluster_data_label`  
+    The name of the metadata label within the input Seurat object that is used for aggregating cells by clusters, cell types, etc. The default value for this parameter is \<seurat_clusters\>, which is generated upon running Seurat.Clustering module. Hence, use the default value when you are using the RDS file from the Seurat.Clustering module.
     
 ## Output Files
 <!-- list and describe any files output by the module -->
