@@ -36,13 +36,12 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 ## References
 1. Subramanian, A., Tamayo, P., Mootha, V. K., Mukherjee, S., Ebert, B. L., Gillette, M. A., et al. (2005). Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. Proceedings of the National Academy of Sciences of the United States of America, 102(43), 15545-15550. http://doi.org/10.1073/pnas.0506580102
 
-2. Reich, M., Liefeld, T., Gould, J., Lerner, J., Tamayo, P., & Mesirov, J. P. (2006). GenePattern 2.0. Nature Genetics, 38(5), 500-501. https://doi.org/10.1038/ng0506-500
-<!-- links to your source repository **specific to the release version**, the Docker image used by the module (as specified in your manifest), and (if applicable) the sha link to the Dockerfile used to build your Docker image -->
+2. Barbie, D. A., Tamayo, P., Boehm, J. S., et al. (2009). Systematic RNA interference reveals that oncogenic KRAS-driven cancers require TBK1. Nature. 2009;462:108-112. http://doi.org/10.1038/nature08460
 
 ## Source Links
-* [The GenePattern ExampleModule v2 source repository](https://github.com/genepattern/scGSEA/)
-* scGSEA uses the [genepattern/scgsea:2 Docker image](https://hub.docker.com/layers/150060459/genepattern/example-module/2/images/sha256-ae4fffff67672e46b251f954ad226b7ad99403c456c1c19911b6ac82f1a27f2f?context=explore)
-* The Dockerfile used to build that image is [here.](https://github.com/genepattern/scgsea/docs/Dockerfile)
+* [The GenePattern scGSEA module source repository](https://github.com/genepattern/scGSEA/)
+<!-- * scGSEA uses the [genepattern/scgsea Docker image](https://hub.docker.com/layers/150060459/genepattern/example-module/2/images/sha256-ae4fffff67672e46b251f954ad226b7ad99403c456c1c19911b6ac82f1a27f2f?context=explore)
+* The Dockerfile used to build that image is [here.](https://github.com/genepattern/scgsea/docs/Dockerfile) -->
 
 ## Parameters
 <!-- short description of the module parameters and their default values, as well as whether they are required -->
@@ -52,14 +51,15 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 | input_file * |  File to be read in RDS format |
 | chip_file  | Chip file used for conversion to gene symbols |
 | gene_set_database_file *  | Gene set data in GMT format |
-| output_file_name * | The basename to use for output file | scGSEA_scores
+| output_file_name * | The basename to use for output file | scGSEA_scores |
+| cluster_data_label * | Metadata label for cluster annotation | seurat_clusters |
 
 \*  required
 
 ## Input Files
 <!-- longer descriptions of the module input files. Include information about format and/or preprocessing...etc -->
 
-1. `input_file`
+1. `input_file`  
     This is the Seurat RDS file from the Seurat.Clustering module.
 2. `chip_file`  
     This parameter’s drop-down allows you to select CHIP files from the [Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) on the GSEA website. This drop-down provides access to only the most current version of MSigDB. You can also upload your own gene set file(s) in [CHIP](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#CHIP:_Chip_file_format_.28.2A.chip.29) format.
@@ -67,7 +67,9 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
     * This parameter’s drop-down allows you to select gene sets from the [Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) on the GSEA website. This drop-down provides access to only the most current version of MSigDB. You can also upload your own gene set file(s) in [GMT](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29) format.
     * If you want to use files from an earlier version of MSigDB you will need to download them from the archived releases on the [website](https://www.gsea-msigdb.org/gsea/downloads.jsp).
 5. `output_file_name`  
-    The prefix used for the name of the output GCT and CSV file. If unspecified, output prefix will be set to \<prefix of input RDS file\>_scGSEA_scores.gct. The output GCT file will contain the projection of input dataset onto a space of gene set enrichments scores.
+    The prefix used for the name of the output GCT and CSV file. If unspecified, output prefix will be set to `scGSEA_scores`. The output CSV and GCT files will contain the projection of input dataset onto a space of gene set enrichments scores.
+6. `cluster_data_label`  
+    The name of the metadata label within the input Seurat object. This label will be used to access the annotations utilized for aggregating cells. The default value for this parameter is `seurat_clusters`, which is the metadata label for cluster annotations generated upon running Seurat.Clustering module. Use the default value when using the RDS file generated from the [Seurat.Clustering](https://github.com/genepattern/Seurat.Clustering) module.
     
 ## Output Files
 <!-- list and describe any files output by the module -->
@@ -75,12 +77,22 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 1. `<output_file_name>.csv`   
     This is a gene set by cell cluster data consisted of scGSEA scores. 
 2. `<output_file_name>.gct`   
-    This is a gene set by cell cluster data consisted of scGSEA scores. The HeatmapViewer module can accept this file as input for generating heatmap visualizations.
-3. `stdout.txt`  
+    This is a gene set by cell cluster data consisted of scGSEA scores. The [HeatmapViewer module](https://github.com/genepattern/HeatMapViewer) can accept this file as input for generating heatmap visualizations.
+3. `cluster_expression.csv`   
+    This is a gene by cell cluster data consisted of normalized gene expression level. 
+4. `stdout.txt`  
     This is standard output from the script.
 
 ## Example Data
 <!-- provide links to example data so that users can see what input & output should look like and so that they and we can use it to test -->
+Input:  
+[input_file](https://datasets.genepattern.org/data/test_data/scGSEA/local.clustered.rds)   
+[gene_set_database_file](https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2023.1.Hs/h.all.v2023.1.Hs.symbols.gmt)   
+[chip_file](https://data.broadinstitute.org/gsea-msigdb/msigdb/annotations/human/Human_Ensembl_Gene_ID_MSigDB.v2023.1.Hs.chip)
+
+Output:  
+[scgsea_scores.csv](https://github.com/genepattern/scGSEA/blob/develop/data/91737/scGSEA_scores.csv)   
+[scgsea_scores.gct](https://github.com/genepattern/scGSEA/blob/develop/data/91737/scGSEA_scores.gct)
 
 ## Platform Dependencies
 Task Type:

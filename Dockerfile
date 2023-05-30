@@ -1,5 +1,7 @@
 ### copyright 203-2023. GenePattern Team @ Mesirov Lab - University of California, San Diego. All rights reserved.
-#
+# 
+# To build the image use the command below:
+# DOCKER_BUILDKIT=1 docker build --platform linux/amd64 -f Dockerfile -t <scgsea tag name> .
 # Currently, module uses genepattern/seurat-suite:4.0.3 image.
 FROM genepattern/seurat-suite:4.0.3
 
@@ -14,5 +16,5 @@ RUN Rscript -e "install.packages('optparse', version='1.7.3', repos='http://cran
 
 # COPY R and Python scripts
 RUN mkdir /scripts
-COPY run_scgsea.py preprocess.R scgsea_helper.py /scripts/
+COPY src/* /scripts/
 RUN chmod a+rwx /scripts/*

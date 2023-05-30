@@ -1,0 +1,13 @@
+
+# Job: 91737
+# User: johnjun094
+# Submitted: 2023-05-30 20:22:35.0
+# Completed: 02023-31-30 08:31:39.477
+# ET(ms): 544477    server:  https://beta.genepattern.org/gp/
+# Module: scGSEA urn:lsid:8080.gpserver.ip-172-31-26-71.ip-172-31-26-71.ec2.internal:genepatternmodules:685:0.9.4
+# Parameters: 
+#    input_file = local.clustered.rds   https://beta.genepattern.org/gp/users/johnjun094/local.clustered.rds # file size 	58613433
+#    gene_set_database_file = gene_set_database_file.list.txt   https://beta.genepattern.org/gp/users/johnjun094/tmp/run1153859076317416605.tmp/gene_set_database_file.list.txt # file size 	301
+#    output_file_name = scGSEA_scores
+#    chip_file = https://data.broadinstitute.org/gsea-msigdb/msigdb/annotations/human/Human_Ensembl_Gene_ID_MSigDB.v2023.1.Hs.chip # file size 	4444080
+#    cluster_data_label = seurat_clusters

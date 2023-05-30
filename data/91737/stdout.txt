@@ -1,0 +1,66 @@
+[1] "=========================================================="
+[1] "Loading library: optparse"
+[1] "=========================================================="
+[1] "Parameters used:"
+$help
+[1] FALSE
+
+$input_file
+[1] "/opt/gpbeta_2/gp_home/users/johnjun094/uploads/local.clustered.rds"
+
+$cluster_data_label
+[1] "seurat_clusters"
+
+[1] "=========================================================="
+Loading Seurat...[1] "...done loading libraries!"
+[1] "=========================================================="
+About to read the Seurat object named[1] "/opt/gpbeta_2/gp_home/users/johnjun094/uploads/local.clustered.rds"
+/opt/gpbeta_2/gp_home/users/johnjun094/uploads/local.clustered.rds[1] "has been read to memory!"
+[1] "Normalizing the data..."
+[1] "=========================================================="
+[1] "Normalizing complete!"
+[1] "Aggregating cells by clusters..."
+[1] "=========================================================="
+[1] "Aggregating cells by clusters complete!"
+[1] "Saving metacell average expression profile..."
+[1] "=========================================================="
+[1] "cluster_expression.csv file saved!"
+==========================================================
+Running scGSEA for
+/opt/gpbeta_2/gp_home/users/johnjun094/uploads/tmp/run1153859076317416605.tmp/gene_set_database_file.list.txt
+Now getting work done.
+==========================================================
+
+About to read the metacell expression
+Loading CHIP file to convert to Gene Symbol
+==========================================================
+Loaded CHIP file!
+
+Loading /opt/gpbeta_2/gp_home/users/johnjun094/uploads/tmp/run1153859076317416605.tmp/gene_set_database_file.list.txt to convert to Gene Symbol
+==========================================================
+Loaded gene set file!
+
+Number of gene sets loaded for scGSEA: 880
+Running scGSEA...
+==========================================================
+Running single-sample GSEA with 880 gene sets ...
+Running single-sample GSEA with 880 gene sets ...
+Running single-sample GSEA with 880 gene sets ...
+Running single-sample GSEA with 880 gene sets ...
+Running single-sample GSEA with 880 gene sets ...
+Saved scGSEA score result in .gct format
+We are done!
+scGSEA Runtime using 12 CPUs:  1 minute and 55.46 seconds
+==========================================================
+Proprocessing the RDS data...
+==========================================================
+Running command: Rscript /scripts/preprocess.R --input_file /opt/gpbeta_2/gp_home/users/johnjun094/uploads/local.clustered.rds --cluster_data_label seurat_clusters
+Finished Preprocessing!
+
+==========================================================
+Performing scGSEA...
+==========================================================
+Running command: python3 /scripts/run_scgsea.py --gene_set_database_file /opt/gpbeta_2/gp_home/users/johnjun094/uploads/tmp/run1153859076317416605.tmp/gene_set_database_file.list.txt --output_file_name scGSEA_scores --n_threads 12 --chip_file /opt/gpbeta_2/gp_home/users/.cache/uploads/cache/data.broadinstitute.org/gsea-msigdb/msigdb/annotations/human/Human_Ensembl_Gene_ID_MSigDB.v2023.1.Hs.chip
+scGSEA Complete!
+
+We are done! Wall time elapsed: 3 minutes and 56.98 seconds

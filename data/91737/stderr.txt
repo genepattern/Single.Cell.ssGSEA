@@ -1,0 +1,2 @@
+Normalizing across cells
+The following functions and any applicable methods accept the dots: CreateSeuratObject
