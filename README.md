@@ -37,6 +37,8 @@ scGSEA is an extension of ssGSEA tailored for single-cell data analysis. It addr
     * If you want to use files from an earlier version of MSigDB you will need to download them from the archived releases on the [website](https://www.gsea-msigdb.org/gsea/downloads.jsp).
 5. `output_file_name`  
     The prefix used for the name of the output GCT and CSV file. If unspecified, output prefix will be set to \<prefix of input RDS file\>_scGSEA_scores.gct. The output GCT file will contain the projection of input dataset onto a space of gene set enrichments scores.
+6. `cluster_data_label`  
+    The name of the metadata label within the input Seurat object. This label will be used to access the annotations utilized for aggregating cells. The default value for this parameter is `seurat_clusters`, which is the metadata label for cluster annotations generated upon running Seurat.Clustering module. Use the default value when using the RDS file generated from the [Seurat.Clustering](https://github.com/genepattern/Seurat.Clustering) module.
     
 ## Output Files
 <!-- list and describe any files output by the module -->
@@ -45,7 +47,9 @@ scGSEA is an extension of ssGSEA tailored for single-cell data analysis. It addr
     This is a gene set by cell cluster data consisted of scGSEA scores. 
 2. `<output_file_name>.gct`   
     This is a gene set by cell cluster data consisted of scGSEA scores. The HeatmapViewer module can accept this file as input for generating heatmap visualizations.
-3. `stdout.txt`  
+3. `cluster_expression.csv`   
+    This is a gene by cell cluster data consisted of normalized gene expression level. 
+4. `stdout.txt`  
     This is standard output from the script.
 
 For more details, please refer to the [full documentation](https://github.com/JohnSpJun/scGSEA/blob/main/docs/documentation.md).
