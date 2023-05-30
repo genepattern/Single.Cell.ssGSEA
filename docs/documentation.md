@@ -78,13 +78,16 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
     This is a gene set by cell cluster data consisted of scGSEA scores. 
 2. `<output_file_name>.gct`   
     This is a gene set by cell cluster data consisted of scGSEA scores. The HeatmapViewer module can accept this file as input for generating heatmap visualizations.
-3. `stdout.txt`  
+3. `cluster_expression.csv`   
+    This is a gene by cell cluster data consisted of normalized gene expression level. 
+5. `stdout.txt`  
     This is standard output from the script.
 
 ## Example Data
 <!-- provide links to example data so that users can see what input & output should look like and so that they and we can use it to test -->
 Input:  
 [Seurat RDS file](https://datasets.genepattern.org/data/test_data/scGSEA/local.clustered.rds)
+[]
 
 Output:  
 [scgsea_scores.csv]()
