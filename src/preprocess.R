@@ -11,6 +11,7 @@ parser = OptionParser()
 # ====================================
 # Paramter for the RDS input file
 parser <- add_option(parser, c("--input_file"), help = "RDS file to load.")
+parser <- add_option(parser, c("--cluster_data_label"), help = "Metadata label to use for aggregating cells")
 
 print('==========================================================')
 args <- parse_args(parser)
@@ -42,7 +43,7 @@ print("Normalizing complete!")
 # Group by metacell 
 print("Aggregating cells by clusters...")
 print('==========================================================')
-aggregatedObj <- AverageExpression(SeuratObj, group.by = "seurat_clusters", use.raw = FALSE)
+aggregatedObj <- AverageExpression(SeuratObj, group.by = args$cluster_data_label, use.raw = FALSE)
 print("Aggregating cells by clusters complete!")
 
 print("Saving metacell average expression profile...")
