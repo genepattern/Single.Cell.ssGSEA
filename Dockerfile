@@ -16,5 +16,5 @@ RUN Rscript -e "install.packages('optparse', version='1.7.3', repos='http://cran
 
 # COPY R and Python scripts
 RUN mkdir /scripts
-COPY run_scgsea.py preprocess.R scgsea_helper.py /scripts/
+COPY src/* /scripts/
 RUN chmod a+rwx /scripts/*
