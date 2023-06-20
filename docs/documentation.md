@@ -61,18 +61,17 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 <!-- longer descriptions of the module input files. Include information about format and/or preprocessing...etc -->
 
 1. `input_file`  
-    This is a file containing raw counts gene expression data. Supports multiple input file formats including Seurat RDS, h5seurat, h5ad formats as well as 10x Market Exchange (MEX), hdf5 (h5) formats.
+    This is a file containing raw counts gene expression data. Supports multiple input file formats including Seurat RDS, h5seurat, h5ad formats as well as 10x Market Exchange (MEX), hdf5 (h5) formats. For a Seurat object, `$RNA@counts` slot will be accessed. For AnnData object, `raw.X` slot will be accessed. 
 2. `chip_file`  
     This parameter’s drop-down allows you to select CHIP files from the [Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) on the GSEA website. This drop-down provides access to only the most current version of MSigDB. You can also upload your own gene set file(s) in [CHIP](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#CHIP:_Chip_file_format_.28.2A.chip.29) format.
-4. `gene_set_database_file`
+3. `gene_set_database_file`
     * This parameter’s drop-down allows you to select gene sets from the [Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) on the GSEA website. This drop-down provides access to only the most current version of MSigDB. You can also upload your own gene set file(s) in [GMT](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29) format.
     * If you want to use files from an earlier version of MSigDB you will need to download them from the archived releases on the [website](https://www.gsea-msigdb.org/gsea/downloads.jsp).
-5. `output_file_name`
+4. `output_file_name`
     The prefix used for the name of the output GCT and CSV file. If unspecified, output prefix will be set to `scGSEA_scores`. The output CSV and GCT files will contain the projection of input dataset onto a space of gene set enrichments scores.
-6. `cluster_data_label`  
+5. `cluster_data_label`  
     The name of the metadata label within the input Seurat object. This label will be used to access the annotations utilized for aggregating cells. The default value for this parameter is `seurat_clusters`, which is the metadata label for cluster annotations generated upon running Seurat.Clustering module. Use the default value when using the RDS file generated from the [Seurat.Clustering](https://github.com/genepattern/Seurat.Clustering) module.
-
-7. `cluster_annotation_file`  
+6. `cluster_annotation_file`  
     If your input file does not contain cell grouping data, a cluster annotation file (tab-delimited .txt file) must be provided. The grouping information in this file is used to aggregate cells prior to computing scGSEA scores.
    
     <img width="350" alt="Screenshot 2023-06-20 at 10 46 48 AM" src="https://github.com/genepattern/scGSEA/assets/111310290/9d9f624b-8d50-46ba-90ba-4ad3a8279150">
