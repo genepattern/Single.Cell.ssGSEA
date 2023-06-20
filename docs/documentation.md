@@ -74,7 +74,8 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 
 7. `cluster_annotation_file`  
     If your input file does not contain cell grouping data, a cluster annotation file (tab-delimited .txt file) must be provided. The grouping information in this file is used to aggregate cells prior to computing scGSEA scores.
-    
+    <img width="650" alt="Screenshot 2023-06-20 at 10 46 48 AM" src="https://github.com/genepattern/scGSEA/assets/111310290/9d9f624b-8d50-46ba-90ba-4ad3a8279150">
+
 ## Output Files
 <!-- list and describe any files output by the module -->
 
