@@ -71,8 +71,8 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
     The prefix used for the name of the output GCT and CSV file. If unspecified, output prefix will be set to `scGSEA_scores`. The output CSV and GCT files will contain the projection of input dataset onto a space of gene set enrichments scores.
 5. `cluster_data_label`  
     The name of the metadata label within the input Seurat object. This label will be used to access the annotations utilized for aggregating cells. The default value for this parameter is `seurat_clusters`, which is the metadata label for cluster annotations generated upon running Seurat.Clustering module. Use the default value when using the RDS file generated from the [Seurat.Clustering](https://github.com/genepattern/Seurat.Clustering) module. Otherwise, provide the appropriate metadata label for the slot that stores cell grouping information. 
-6. `cluster_annotation_file`  
-    If your input file does not contain cell grouping data, a cluster annotation file (tab-delimited .txt file) must be provided. The grouping information in this file is used to aggregate cells prior to computing scGSEA scores. 
+6. `cluster_data_file`  
+    If your input file does not contain cell grouping data, a cluster data file (tab-delimited .txt file) must be provided. The grouping information in this file is used to aggregate cells prior to computing scGSEA scores. 
    
     <img width="350" alt="Screenshot 2023-06-20 at 10 46 48 AM" src="https://github.com/genepattern/scGSEA/assets/111310290/9d9f624b-8d50-46ba-90ba-4ad3a8279150">
 
