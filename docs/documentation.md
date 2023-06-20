@@ -61,7 +61,7 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 <!-- longer descriptions of the module input files. Include information about format and/or preprocessing...etc -->
 
 1. `input_file`  
-    This is a file containing raw counts gene expression data. Supports multiple input file formats including Seurat RDS, h5seurat, h5ad formats as well as 10x Market Exchange (MEX), hdf5 (h5) formats. For a Seurat object, `$RNA@counts` slot will be accessed. For AnnData object, `raw.X` slot will be accessed. 
+    This is a file containing raw counts gene expression data. Supports multiple input file formats including Seurat RDS, h5seurat, h5ad formats as well as 10x Market Exchange (MEX), hdf5 (h5) formats. For a Seurat object, `$RNA@counts` slot will be accessed. For AnnData object, `raw.X` slot will be accessed.
 2. `chip_file`  
     This parameter’s drop-down allows you to select CHIP files from the [Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) on the GSEA website. This drop-down provides access to only the most current version of MSigDB. You can also upload your own gene set file(s) in [CHIP](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#CHIP:_Chip_file_format_.28.2A.chip.29) format.
 3. `gene_set_database_file`
