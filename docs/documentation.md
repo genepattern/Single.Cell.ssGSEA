@@ -52,7 +52,7 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 | chip_file  | Chip file used for conversion to gene symbols |
 | gene_set_database_file *  | Gene set data in GMT format |
 | output_file_name * | The basename to use for output file | scGSEA_scores |
-| cluster_data_label | Metadata label for cluster annotation | seurat_clusters | .rds, h5seurat, h5ad |
+| cluster_data_label | Metadata label for cluster annotation | seurat_clusters | rds, h5seurat, h5ad |
 | cluster_annotation_file | Metadata file for cluster annotation | | 10x MEX, h5 |
 
 \*  required
