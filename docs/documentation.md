@@ -46,14 +46,14 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 ## Parameters
 <!-- short description of the module parameters and their default values, as well as whether they are required -->
 
-| Name | Description <!--short description--> | Default Value | Use With |
+| Name | Description <!--short description--> | Default Value | 
 ---------|--------------|----------------|----------------|
 | input_file * |  File containing raw counts data to be read in |
 | chip_file  | Chip file used for conversion to gene symbols |
 | gene_set_database_file *  | Gene set data in GMT format |
 | output_file_name * | Basename to use for output file | scGSEA_scores |
-| cluster_data_label | Metadata label for cluster annotation | seurat_clusters | rds, h5seurat, h5ad |
-| cluster_annotation_file | Metadata file for cluster annotation | | 10x MEX, h5 |
+| cluster_data_label | Metadata label for cell grouping information | seurat_clusters |
+| cluster_data_file | Metadata file for cell grouping information |
 
 \*  required
 
