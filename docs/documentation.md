@@ -47,7 +47,7 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 <!-- short description of the module parameters and their default values, as well as whether they are required -->
 
 | Name | Description <!--short description--> | Default Value | 
----------|--------------|----------------|----------------|
+---------|--------------|----------------|
 | input_file * |  File containing raw counts data to be read in |
 | chip_file  | Chip file used for conversion to gene symbols |
 | gene_set_database_file *  | Gene set data in GMT format |
