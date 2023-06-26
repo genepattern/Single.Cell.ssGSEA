@@ -59,8 +59,8 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 
 
 When supplying the cell grouping information,
-* For `h5seurat`, `h5ad`, or `Seurat RDS` files : use the `cluster_data_label` parameter.
-* For `10x MEX`, `h5` files : use the `cluster_data_file` parameter.
+* For `h5seurat`, `h5ad`, and `Seurat RDS` files : use the `cluster_data_label` parameter.
+* For `10x MEX` and `h5` files : use the `cluster_data_file` parameter.
 
 
 ## Input Files
