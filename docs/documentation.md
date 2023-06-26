@@ -54,8 +54,13 @@ Furthermore, scGSEA enables the integration of single-cell data with prior knowl
 | output_file_name * | Basename to use for output file | scGSEA_scores |
 | cluster_data_label | Metadata label for cell grouping information | seurat_clusters |
 | cluster_data_file | Metadata file for cell grouping information |
-
 \*  required
+
+
+When supplying the cell grouping information,
+* For `h5seurat`, `h5ad`, or `Seurat RDS` files, use the `cluster_data_label` parameter.
+* For `10x MEX`, `h5` files, use the `cluster_data_file` parameter.
+
 
 ## Input Files
 <!-- longer descriptions of the module input files. Include information about format and/or preprocessing...etc -->
