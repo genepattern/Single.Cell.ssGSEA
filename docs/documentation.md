@@ -64,7 +64,7 @@ When supplying the cell grouping metadata information,
     This is a file containing raw counts gene expression data that is not normalized. The scGSEA module supports multiple input file formats including Seurat RDS, H5seurat, H5ad formats as well as 10x Market Exchange (MEX) and hdf5 (h5) formats. For a Seurat object, `$RNA@counts` slot will be accessed. For an AnnData object, `raw.X` slot will be accessed.
    * If you come across the following message in the `stderr.txt` file, please verify that the input file contains unnormalized raw counts data.
     &nbsp;<pre><code>The raw counts matrix was not composed of integer values. This may represent an issue with the processing pipeline. Please be advised...</code></pre>
-   * If you have used `kallisto` or `salmon.alevin` for alignment, please disregard the message about the raw counts data not being in integer format; the aforementioned tools generate estimated read counts, which may consist of non-integer count values.
+   * If you have used `kallisto` or `salmon.alevin` for alignment, please disregard the message about the raw counts data not being in integer format; the aforementioned tools generate estimated RNA abundances, which may consist of non-integer count values.
 3. `chip_file`  
     This parameter’s drop-down allows you to select CHIP files from the [Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) on the GSEA website. This drop-down provides access to only the most current version of MSigDB. You can also upload your own gene set file(s) in [CHIP](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#CHIP:_Chip_file_format_.28.2A.chip.29) format.
 4. `gene_set_database_file`
