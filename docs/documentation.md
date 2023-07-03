@@ -30,7 +30,7 @@ In scGSEA, normalization methods are adapted to account for the sparsity of sing
 
 By employing scGSEA, researchers can address various scientific research questions in the context of single-cell data analysis. For example, they can investigate the activity of specific pathways or gene sets across different cell types or conditions within a heterogeneous population of cells, aiding in the discovery of cellular heterogeneity and functional diversity.
 
-Furthermore, scGSEA enables the integration of single-cell data with prior knowledge of biological pathways or gene sets, providing insights into the underlying mechanisms driving cellular processes. By comparing enrichment scores between different samples or conditions, researchers can gain a better understanding of how gene expression patterns relate to specific biological functions, disease phenotypes, or treatment responses.
+Furthermore, scGSEA enables utilization of single-cell data with prior knowledge of biological pathways or gene sets, providing insights into the underlying mechanisms driving cellular processes. By comparing enrichment scores between different samples or conditions, researchers can gain a better understanding of how gene expression patterns relate to specific biological functions, disease phenotypes, or treatment responses.
 
 ## Source Links
 * [The GenePattern scGSEA module source repository](https://github.com/genepattern/scGSEA/)
