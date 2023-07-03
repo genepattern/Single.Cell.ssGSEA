@@ -17,7 +17,7 @@
 <!-- Why use this module? What does it do? If this is one of a set of modules, how does this module fit in the set? How does it work? write overview as if you are explaining to a novice. Include any links or images which would serve to clarify -->
 ## Summary
 
-scGSEA is an extension of ssGSEA tailored for single-cell data analysis. It addresses the challenges of sparsity and occasional variability in the enrichment scoring by employing specialized normalization methods and scoring metrics. By utilizing scGSEA, scientists can explore and interpret pathway activity and functional alterations within heterogeneous populations of cells, thereby advancing our understanding of complex biological systems.
+scGSEA is an extension of ssGSEA tailored for single-cell data analysis. It uses normalization method and scoring metric chosen to minimize the uncertainty due to sparsity. It addresses the challenges of sparsity and occasional variability in the enrichment scoring by employing specialized normalization methods and scoring metrics. By utilizing scGSEA, scientists can explore and interpret pathway activity and functional alterations within heterogeneous populations of cells, thereby advancing our understanding of complex biological systems.
 
 ## Discussion
 scGSEA (single-cell Gene Set Enrichment Analysis) is an extension of ssGSEA (single-sample Gene Set Enrichment Analysis) specifically designed for analyzing single-cell data. While ssGSEA is commonly used for bulk gene expression data, scGSEA addresses the challenges posed by the sparsity and unreliability of enrichment scoring in single-cell datasets.
@@ -31,12 +31,6 @@ In scGSEA, normalization methods are adapted to account for the sparsity of sing
 By employing scGSEA, researchers can address various scientific research questions in the context of single-cell data analysis. For example, they can investigate the activity of specific pathways or gene sets across different cell types or conditions within a heterogeneous population of cells. scGSEA can also be used to identify genes or pathways that are differentially regulated between different cell clusters or states, aiding in the discovery of cellular heterogeneity and functional diversity.
 
 Furthermore, scGSEA enables the integration of single-cell data with prior knowledge of biological pathways or gene sets, providing insights into the underlying mechanisms driving cellular processes. By comparing enrichment scores between different samples or conditions, researchers can gain a better understanding of how gene expression patterns relate to specific biological functions, disease phenotypes, or treatment responses.
-
-<!-- appropriate papers should be cited here -->
-## References
-1. Subramanian, A., Tamayo, P., Mootha, V. K., Mukherjee, S., Ebert, B. L., Gillette, M. A., et al. (2005). Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. Proceedings of the National Academy of Sciences of the United States of America, 102(43), 15545-15550. http://doi.org/10.1073/pnas.0506580102
-
-2. Barbie, D. A., Tamayo, P., Boehm, J. S., et al. (2009). Systematic RNA interference reveals that oncogenic KRAS-driven cancers require TBK1. Nature. 2009;462:108-112. http://doi.org/10.1038/nature08460
 
 ## Source Links
 * [The GenePattern scGSEA module source repository](https://github.com/genepattern/scGSEA/)
@@ -127,3 +121,9 @@ R 4.1.0, Python 3.8.5
 | Version | Release Date | Description                                 |
 ----------|--------------|---------------------------------------------|
 | 1 | May 21, 2023 | Preproduction version |
+
+<!-- appropriate papers should be cited here -->
+## References
+1. Subramanian, A., Tamayo, P., Mootha, V. K., Mukherjee, S., Ebert, B. L., Gillette, M. A., et al. (2005). Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. Proceedings of the National Academy of Sciences of the United States of America, 102(43), 15545-15550. http://doi.org/10.1073/pnas.0506580102
+
+2. Barbie, D. A., Tamayo, P., Boehm, J. S., et al. (2009). Systematic RNA interference reveals that oncogenic KRAS-driven cancers require TBK1. Nature. 2009;462:108-112. http://doi.org/10.1038/nature08460
