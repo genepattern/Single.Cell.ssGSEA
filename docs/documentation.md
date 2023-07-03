@@ -34,6 +34,8 @@ Furthermore, scGSEA enables utilization of single-cell data with prior knowledge
 
 #### Sparsity in single cell data and variability in enrichment scoring
 
+In single-cell data analysis, sparsity refers to the presence of many zero or low expression values across the genes within a dataset. This sparsity can contribute to tied rankings of genes, where multiple genes have the same or very similar expression values and are assigned the same rank. However, the precise order of the tied genes within that rank is not determined, leading to inconsistent rankings across different runs or samples. This tied ranking ambiguity can, therefore, subsequently impact the enrichment scoring outcomes in methods like single-sample Gene Set Enrichment Analysis (ssGSEA). The relative positions of tied genes within a rank can vary, even though their expression values are essentially the same. As a result, small variations in the order of tied genes can lead to different rankings and enrichment scores for the same gene set. The variability in enrichment scoring outcomes due to sparsity-induced tied ranking highlights the importance of considering the uncertainty introduced by tied ranks when interpreting ssGSEA results in the context of sparse single-cell data analysis.
+
 ## Source Links
 * [The GenePattern scGSEA module source repository](https://github.com/genepattern/scGSEA/)
 <!-- * scGSEA uses the [genepattern/scgsea Docker image](https://hub.docker.com/layers/150060459/genepattern/example-module/2/images/sha256-ae4fffff67672e46b251f954ad226b7ad99403c456c1c19911b6ac82f1a27f2f?context=explore)
