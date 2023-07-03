@@ -24,7 +24,7 @@ scGSEA (single-cell Gene Set Enrichment Analysis) is an extension of ssGSEA (sin
 
 ssGSEA is a computational method used to assess the activity of predefined gene sets within individual samples. It quantifies the enrichment of gene sets by calculating an enrichment score for each sample based on the representation of gene set genes in a ranked list of all genes by expression. This approach allows researchers to determine the relative activity of biological pathways represented by gene sets in a given sample, enabling the identification of biologically relevant signatures and functional alterations.
 
-However, when applied to single-cell data, ssGSEA encounters certain challenges. Single-cell datasets are sparse, meaning that only a small fraction of genes are expressed in each individual cell. This sparsity can occasionally lead to variable enrichment scores and hinder the accurate interpretation of pathway activity. [What does sparsity have to do with variability in the enrichment scores?] (# Sparsity in single-cell data and variability in enrichment scoring)To overcome these limitations, scGSEA introduces modifications to the normalization and scoring metrics used in ssGSEA to ensure stability in the computed gene set enrichment scores.
+However, when applied to single-cell data, ssGSEA encounters certain challenges. Single-cell datasets are sparse, meaning that only a small fraction of genes are expressed in each individual cell. This sparsity can occasionally lead to variable enrichment scores and hinder the accurate interpretation of pathway activity. [What does sparsity have to do with variability in the enrichment scores?] (### Sparsity-in-single-cell-data-and-variability-in-enrichment-scoring)To overcome these limitations, scGSEA introduces modifications to the normalization and scoring metrics used in ssGSEA to ensure stability in the computed gene set enrichment scores.
 
 In scGSEA, normalization methods are adapted to account for the sparsity of single-cell data. Traditional normalization techniques, such as log-transformations or scaling by total read counts, may not be suitable for single-cell data due to the presence of many zeros. Instead, scGSEA utilizes centered-log ratio normalization across cells along with the Kolmogorov-Smirnov(KS) statistics, the combination of which best accounts for the variabiliity and uncertainty associated with single-cell data as demonstrated by improved consistency in the enrichment scores over other normalizations and scoring metrics.
 
@@ -32,7 +32,7 @@ By employing scGSEA, researchers can address various scientific research questio
 
 Furthermore, scGSEA enables utilization of single-cell data with prior knowledge of biological pathways or gene sets, providing insights into the underlying mechanisms driving cellular processes. By comparing enrichment scores between different samples or conditions, researchers can gain a better understanding of how gene expression patterns relate to specific biological functions, disease phenotypes, or treatment responses.
 
-### Sparsity in single-cell data and variability in enrichment scoring
+### Sparsity in single cell data and variability in enrichment scoring
 
 ## Source Links
 * [The GenePattern scGSEA module source repository](https://github.com/genepattern/scGSEA/)
