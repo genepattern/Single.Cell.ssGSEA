@@ -21,12 +21,12 @@ While ssGSEA was designed for use with bulk gene expression data, scGSEA address
 
 | Name | Description <!--short description--> | Default Value | 
 ---------|--------------|----------------|
-| input_file * |  File containing raw counts data to be read in |
-| chip_file  | Chip file used for conversion to gene symbols |
-| gene_set_database_file *  | Gene set data in GMT format |
-| output_file_name * | Basename to use for output file | scGSEA_scores |
-| cluster_data_label | Metadata label for cell grouping information | seurat_clusters |
-| cluster_data_file | Metadata file for cell grouping information |
+| input file * |  File containing raw counts data to be read in |
+| chip file  | Chip file used for conversion to gene symbols |
+| gene set database file *  | Gene set data in GMT format |
+| output file name * | Basename to use for output file | scGSEA_scores |
+| cluster data label | Metadata label for cell grouping information | seurat_clusters |
+| cluster data file | Metadata file for cell grouping information |
 
 *  Required
 
@@ -39,21 +39,21 @@ When supplying the cell grouping metadata information,
 ## Input Files
 <!-- longer descriptions of the module input files. Include information about format and/or preprocessing...etc -->
 
-1. `input_file`  
+1. `input file`  
     This is a file containing raw counts gene expression data that is not normalized. The scGSEA module supports multiple input file formats including Seurat RDS, H5seurat, H5ad formats as well as 10x Market Exchange (MEX) and hdf5 (h5) formats. For a Seurat object, `$RNA@counts` slot will be accessed. For an AnnData object, `raw.X` slot will be accessed.
    * If you come across the following message in the `stderr.txt` file, please verify that the input file contains unnormalized raw counts data.
     &nbsp;<pre><code>The raw counts matrix was not composed of integer values. This may represent an issue with the processing pipeline. Please be advised...</code></pre>
    * If you have used `kallisto` or `salmon.alevin` for alignment, please disregard the message about the raw counts data not being in integer format; the aforementioned tools generate estimated RNA abundances, which may consist of non-integer count values.
-3. `chip_file`  
+3. `chip file`  
     This parameter’s drop-down allows you to select CHIP files from the [Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) on the GSEA website. This drop-down provides access to only the most current version of MSigDB. You can also upload your own gene set file(s) in [CHIP](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#CHIP:_Chip_file_format_.28.2A.chip.29) format.
-4. `gene_set_database_file`
+4. `gene set database file`
     * This parameter’s drop-down allows you to select gene sets from the [Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) on the GSEA website. This drop-down provides access to only the most current version of MSigDB. You can also upload your own gene set file(s) in [GMT](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29) format.
     * If you want to use files from an earlier version of MSigDB you will need to download them from the archived releases on the [website](https://www.gsea-msigdb.org/gsea/downloads.jsp).
-5. `output_file_name`  
+5. `output file name`  
     The prefix used for the name of the output GCT and CSV file. The default output prefix is `scGSEA_scores`. The output CSV and GCT files will contain the projection of input dataset onto a space of gene set enrichments scores.
-6. `metacell_data_label`  
+6. `metacell data label`  
     The name of the metadata label for cluster information within the input Seurat/AnnData object. This label will be used to access the cell grouping information utilized for aggregating cells. The default value for this parameter is `seurat_clusters`, which is the metadata label for cluster annotations generated upon running Seurat.Clustering module. Use the default value when using the RDS file generated from the [Seurat.Clustering](https://github.com/genepattern/Seurat.Clustering) module. Otherwise, provide the appropriate metadata label for the slot that stores cell grouping information.
-7. `metacell_data_file`  
+7. `metacell data file`  
     If your input file is `h5` or `10x MEX` format, a separate cluster data file (tab-delimited .txt file) must be supplied here. The grouping information in this file is used to aggregate cells prior to computing scGSEA scores. Therefore, if you have `h5` or `10x MEX` formatted files and do not have cluster data file, please use [ScanpyUtilities](https://github.com/genepattern/ScanpyUtilities) module or the GenePattern Seurat Suite ([Seurat.QC](https://github.com/genepattern/Seurat.QC) > [Seurat.Preprocess](https://github.com/genepattern/Seurat.Preprocess) > [Seurat.Clustering](https://github.com/genepattern/Seurat.Clustering)) to compute clusters.
    
     <img width="350" alt="Screenshot 2023-06-20 at 10 46 48 AM" src="https://github.com/genepattern/scGSEA/assets/111310290/9d9f624b-8d50-46ba-90ba-4ad3a8279150">
