@@ -39,7 +39,7 @@ When supplying the cell grouping (metacell) information,
 ## Input Files
 
 1. `input file`  
-    This is a file containing raw counts gene expression data that is not normalized. The scGSEA module supports multiple input file formats including Seurat RDS, H5seurat, H5ad formats as well as 10x Market Exchange (MEX) and hdf5 (h5) formats. For a Seurat object, `$RNA@counts` slot will be accessed. For an AnnData object, `raw.X` slot will be accessed.
+    This is a file containing unnormalized gene expression data in raw read counts or estimated RNA abundance. The scGSEA module supports multiple input file formats including Seurat RDS, H5seurat, H5ad formats as well as 10x Market Exchange (MEX) and HDF5 (h5) formats. For a Seurat object, the $RNA@counts slot will be used. For an AnnData object, the raw.X slot will be used. 
    * If you come across the following message in the `stderr.txt` file, please verify that the input file contains unnormalized raw counts data.
     &nbsp;<pre><code>The raw counts matrix was not composed of integer values. This may represent an issue with the processing pipeline. Please be advised...</code></pre>
    * If you have used `kallisto` or `salmon.alevin` for alignment, please disregard the message about the raw counts data not being in integer format; the aforementioned tools generate estimated RNA abundances, which may consist of non-integer count values.
