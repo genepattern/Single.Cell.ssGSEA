@@ -6,10 +6,6 @@
 
 **Contact**: [Forum Link](https://groups.google.com/forum/?utm_medium=email&utm_source=footer#!forum/genepattern-help)
 
-## Summary
-
-scGSEA is an extension of ssGSEA tailored for single-cell data analysis. It addresses the challenges of sparsity and occasional variability in the enrichment scoring by employing normalization method and scoring metric chosen to minimize uncertainty. By utilizing scGSEA, scientists can explore and interpret pathway activity and functional alterations within heterogeneous populations of cells.
-
 ## Discussion
 scGSEA (single-cell Gene Set Enrichment Analysis) is an extension of [ssGSEA](https://cloud.genepattern.org/gp/pages/index.jsf?lsid=urn:lsid:broad.mit.edu:cancer.software.genepattern.module.analysis:00270:10.1.0)<sup>[2]</sup> (single-sample Gene Set Enrichment Analysis) specifically designed for analyzing single-cell data. ssGSEA is a computational method used to assess the activation or repression of an a priori set of genes associated with a particular biological process or pathway in an individual sample [Barbie et al., Nature 2009]. Genes are ranked by their absolute expression in the sample and assessed for their over-representation, i.e., enrichment, at the top or bottom of the list.
 
