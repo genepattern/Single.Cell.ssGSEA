@@ -21,6 +21,7 @@ While ssGSEA was designed for use with bulk gene expression data, scGSEA address
 
 | Name | Description <!--short description--> | Default Value | 
 ---------|--------------|----------------|
+| Input Files|||
 | input file * |  File containing raw counts or mRNA abundance estimates to be read in |
 | gene set database file *  | Gene sets in GMT format |
 | chip file  | Chip file used for conversion to gene symbols |
