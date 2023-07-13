@@ -20,20 +20,45 @@ While ssGSEA was designed for use with bulk gene expression data, scGSEA address
 <!-- short description of the module parameters and their default values, as well as whether they are required -->
 
 <table>
-    <tr>
-    <td align="center" nowrap="nowrap">Name</td><td align="center" nowrap="nowrap">Description</td><td align="center" nowrap="nowrap">Default Value</td>
-    </tr>
-    <tr></tr><td colspan="3">I take up two columns!</td></tr>
+    <thead>
+        <tr>
+            <th>Parameter Group</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Default Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="1" rowspan="4">Input Files</td>
+            <td>input file *</td> 
+            <td>File containing raw counts or mRNA abundance estimates to be read in</td>
+        </tr>
+        <tr>
+            <td>gene set database file *</td>
+            <td>Gene sets in GMT format</td>
+        </tr>
+        <tr>
+            <td>chip file</td>
+            <td>Chip file used for conversion to gene symbols</td>
+        </tr>
+        <tr>
+            <td>output file name *</td>
+            <td>Basename to use for output file</td>
+            <td><i>scGSEA_scores</i></td>
+        </tr>
+        <tr>
+            <td colspan="1" rowspan="2">Cell Grouping Data</td>
+            <td>metacell data label</td> 
+            <td>Metadata label for cell grouping (metacell) information; clustering data</td>
+            <td><i>seurat_clusters</i></td>
+        </tr>
+        <tr>
+            <td>metacell data file</td> 
+            <td>Metadata file for cell grouping (metacell) information; clustering data</td>
+        </tr>
+    </tbody>
 </table>
-| Name | Description | Default Value | 
-|---------|--------------|----------------|
-|<td colspan="3">I take up two columns!</td>
-| input file * |  File containing raw counts or mRNA abundance estimates to be read in |
-| gene set database file *  | Gene sets in GMT format |
-| chip file  | Chip file used for conversion to gene symbols |
-| output file name * | Basename to use for output file | <i>scGSEA_scores</i> |
-| cluster data label | Metadata label for cell grouping (metacell) information; clustering data | <i>seurat_clusters</i> |
-| cluster data file | Metadata file for cell grouping (metacell) information; clustering data |
 
 *  Required
 
