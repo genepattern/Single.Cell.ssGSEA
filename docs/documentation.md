@@ -50,7 +50,7 @@ When supplying the cell grouping (metacell) information,
     * This parameter’s drop-down allows you to select gene sets from the [Molecular Signatures Database (MSigDB)](https://www.gsea-msigdb.org/gsea/msigdb/index.jsp) on the GSEA website. This drop-down provides access to only the most current (2023) version of MSigDB. You can also upload your own gene set file(s) in [GMT](https://software.broadinstitute.org/cancer/software/gsea/wiki/index.php/Data_formats#GMT:_Gene_Matrix_Transposed_file_format_.28.2A.gmt.29) format.
     * If you want to use files from an earlier version of MSigDB you will need to download them from the archived releases on the [website](https://www.gsea-msigdb.org/gsea/downloads.jsp).
 5. `output file name`  
-    The prefix used for the name of the output GCT and CSV file. The default output prefix is `scGSEA_scores`. The output CSV and GCT files will contain the projection of input dataset onto a space of gene set enrichments scores.
+    The prefix used for the name of the output GCT and CSV file. The default output prefix is <i>scGSEA_scores</i>. The output CSV and GCT files will contain a gene set x metacell matrix of enrichments scores.
 
 ## Cell Grouping Data
 7. `metacell data label`  
