@@ -21,9 +21,9 @@ While ssGSEA was designed for use with bulk gene expression data, scGSEA address
 
 | Name | Description <!--short description--> | Default Value | 
 ---------|--------------|----------------|
-| input file * |  File containing raw counts data to be read in |
+| input file * |  File containing raw counts or mRNA abundance estimates to be read in |
 | chip file  | Chip file used for conversion to gene symbols |
-| gene set database file *  | Gene set data in GMT format |
+| gene set database file *  | Gene sets in GMT format |
 | output file name * | Basename to use for output file | <i>scGSEA_scores</i> |
 | cluster data label | Metadata label for cell grouping (metacell) information; clustering data | <i>seurat_clusters</i> |
 | cluster data file | Metadata file for cell grouping (metacell) information; clustering data |
@@ -31,13 +31,12 @@ While ssGSEA was designed for use with bulk gene expression data, scGSEA address
 *  Required
 
 
-When supplying the cell grouping metadata information,
+When supplying the cell grouping (metacell) information,
 * For Seurat `rds`, `h5seurat`, and `h5ad` files > Use the `metacell data label` parameter.
 * For `10x MEX` and `10x HDF5(h5)` files > Use the `metacell data file` parameter.
 
 
 ## Input Files
-<!-- longer descriptions of the module input files. Include information about format and/or preprocessing...etc -->
 
 1. `input file`  
     This is a file containing raw counts gene expression data that is not normalized. The scGSEA module supports multiple input file formats including Seurat RDS, H5seurat, H5ad formats as well as 10x Market Exchange (MEX) and hdf5 (h5) formats. For a Seurat object, `$RNA@counts` slot will be accessed. For an AnnData object, `raw.X` slot will be accessed.
