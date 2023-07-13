@@ -20,8 +20,8 @@ While ssGSEA was designed for use with bulk gene expression data, scGSEA address
 <!-- short description of the module parameters and their default values, as well as whether they are required -->
 
 | Name | Description | Default Value | 
----------|--------------|----------------|
-|<td colspan="3">I take up two columns!</td>
+|---------|--------------|----------------|
+<td colspan="3">I take up two columns!</td>
 | input file * |  File containing raw counts or mRNA abundance estimates to be read in |
 | gene set database file *  | Gene sets in GMT format |
 | chip file  | Chip file used for conversion to gene symbols |
