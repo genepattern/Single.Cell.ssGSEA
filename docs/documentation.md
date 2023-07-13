@@ -32,8 +32,8 @@ While ssGSEA was designed for use with bulk gene expression data, scGSEA address
 
 
 When supplying the cell grouping metadata information,
-* For `h5seurat`, `h5ad`, and `Seurat RDS` files : use the `cluster_data_label` parameter.
-* For `10x MEX` and `10x HDF5(h5)` files : use the `cluster_data_file` parameter.
+* For `h5seurat`, `h5ad`, and `Seurat RDS` files, use the `metacell data label` parameter.
+* For `10x MEX` and `10x HDF5(h5)` files, use the `metacell data file` parameter.
 
 
 ## Input Files
