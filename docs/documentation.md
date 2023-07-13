@@ -30,17 +30,20 @@ While ssGSEA was designed for use with bulk gene expression data, scGSEA address
     </thead>
     <tbody>
         <tr>
-            <td colspan="1" rowspan="4">Input Files</td>
+            <td colspan="1" rowspan="4" align="center">Input Files</td>
             <td>input file *</td> 
             <td>File containing raw counts or mRNA abundance estimates to be read in</td>
+            <td></td>
         </tr>
         <tr>
             <td>gene set database file *</td>
             <td>Gene sets in GMT format</td>
+            <td></td>
         </tr>
         <tr>
             <td>chip file</td>
             <td>Chip file used for conversion to gene symbols</td>
+            <td></td>
         </tr>
         <tr>
             <td>output file name *</td>
@@ -48,7 +51,7 @@ While ssGSEA was designed for use with bulk gene expression data, scGSEA address
             <td><i>scGSEA_scores</i></td>
         </tr>
         <tr>
-            <td colspan="1" rowspan="2">Cell Grouping Data</td>
+            <td colspan="1" rowspan="2" align="center">Cell Grouping Data</td>
             <td>metacell data label</td> 
             <td>Metadata label for cell grouping (metacell) information; clustering data</td>
             <td><i>seurat_clusters</i></td>
@@ -56,6 +59,7 @@ While ssGSEA was designed for use with bulk gene expression data, scGSEA address
         <tr>
             <td>metacell data file</td> 
             <td>Metadata file for cell grouping (metacell) information; clustering data</td>
+            <td></td>
         </tr>
     </tbody>
 </table>
