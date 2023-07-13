@@ -95,7 +95,7 @@ When supplying the cell grouping (metacell) information,
 6. `metacell data file`  
     If your input file is `h5` or `10x MEX` format, a separate cell grouping data file (tab-delimited .txt file) must be supplied here. The first column, "Name", would have cell names and the second column, "Metacell", would have metacell (cell group) names. The grouping information in this file is used to aggregate cells prior to computing scGSEA scores. Therefore, if you have `h5` or `10x MEX` formatted files and do not have metacell data file, please use the GenePattern [ScanpyUtilities](https://github.com/genepattern/ScanpyUtilities) module or the GenePattern Seurat Suite ([Seurat.QC](https://github.com/genepattern/Seurat.QC) > [Seurat.Preprocess](https://github.com/genepattern/Seurat.Preprocess) > [Seurat.Clustering](https://github.com/genepattern/Seurat.Clustering)) to compute clusters prior to performing scGSEA.
    
-    <img width="350" alt="Example metacell data file" src="https://github.com/genepattern/scGSEA/assets/111310290/7190d6f8-9cdf-4c63-9a5c-039f06550f23">
+    <img width="300" alt="Example metacell data file" src="https://github.com/genepattern/scGSEA/assets/111310290/7190d6f8-9cdf-4c63-9a5c-039f06550f23">
 
 ### Job Option
 * Job memory
