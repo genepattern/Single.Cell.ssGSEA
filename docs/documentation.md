@@ -25,8 +25,8 @@ While ssGSEA was designed for use with bulk gene expression data, scGSEA address
 | chip file  | Chip file used for conversion to gene symbols |
 | gene set database file *  | Gene set data in GMT format |
 | output file name * | Basename to use for output file | scGSEA_scores |
-| cluster data label | Metadata label for cell grouping information | seurat_clusters |
-| cluster data file | Metadata file for cell grouping information |
+| cluster data label | Metadata label for cell grouping (metacell) information; clustering data | seurat_clusters |
+| cluster data file | Metadata file for cell grouping (metacell) information; clustering data |
 
 *  Required
 
