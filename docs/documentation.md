@@ -19,6 +19,11 @@ While ssGSEA was designed for use with bulk gene expression data, scGSEA address
 ## Parameters
 <!-- short description of the module parameters and their default values, as well as whether they are required -->
 
+<table>
+    <tr>
+    <td align="center" nowrap="nowrap">Name</td><td align="center" nowrap="nowrap">Description</td><td align="center" nowrap="nowrap">Default Value</td>
+  </tr>
+</table>
 | Name | Description | Default Value | 
 |---------|--------------|----------------|
 |<td colspan="3">I take up two columns!</td>
