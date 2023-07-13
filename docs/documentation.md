@@ -97,17 +97,21 @@ When supplying the cell grouping (metacell) information,
    
     <img width="350" alt="Example metacell data file" src="https://github.com/genepattern/scGSEA/assets/111310290/7190d6f8-9cdf-4c63-9a5c-039f06550f23">
 
+### Job Option
+* Job memory
+    This is the memory allocated to your scGSEA job. The default memory is 32GB; however, appropriate adjustment is recommended based on the size of your input file. 
+* Job cpuCount
+    scGSEA supports parallelization of the enrichment scoring process through multi-threading. The default value is 3 and the job will be divided into 3 subprocesses. It is recommended that you increase the job cpuCount when computing enrichment scores for a large number of gene sets.
+
 ## Output Files
 <!-- list and describe any files output by the module -->
 
 1. `<output_file_name>.csv`   
-    This is a gene set by cell cluster data consisted of scGSEA scores. 
+    This is a gene set x metacell matrix consisted of scGSEA scores. 
 2. `<output_file_name>.gct`   
-    This is a gene set by cell cluster data consisted of scGSEA scores. The [HeatmapViewer module](https://github.com/genepattern/HeatMapViewer) can accept this file as input for generating heatmap visualizations.
-3. `cluster_expression.csv`   
-    This is a gene by cell cluster data consisted of normalized gene expression level. 
-4. `stdout.txt`  
-    This is standard output from the script.
+    This is a gene set x metacell matrix consisted of scGSEA scores. The [HeatmapViewer module](https://github.com/genepattern/HeatMapViewer) can accept this file as input for generating heatmap visualizations.
+3. `metacell_expression.csv`   
+    This is a gene by metacell matrix consisted of normalized gene expression. 
 
 ## Example Data
 <!-- provide links to example data so that users can see what input & output should look like and so that they and we can use it to test -->
@@ -134,13 +138,11 @@ Language:
 R 4.1.0, Python 3.8.5
 
 ## Version Comments
-<!--For each version of a module, provide a short comment about what was changed in the new version of a module. Version comments consist of 3 parts: a date, a version number, and a short description. The date should be the release date of that version of the module, and the version number should match the version of the module for which it corresponds to. The description can be short, but should be informative (e.g. "added support for log transformed data", or "fixed bug with out of memory exception"). When a user views the documentation, all version comments up to and including the current version will be displayed, and act as a short version history for the module. -->
 
 | Version | Release Date | Description                                 |
 ----------|--------------|---------------------------------------------|
 | 1 | May 21, 2023 | Preproduction version |
 
-<!-- appropriate papers should be cited here -->
 ## References
 1. Subramanian, A., Tamayo, P., Mootha, V. K., Mukherjee, S., Ebert, B. L., Gillette, M. A., et al. (2005). Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. Proceedings of the National Academy of Sciences of the United States of America, 102(43), 15545-15550. http://doi.org/10.1073/pnas.0506580102
 
