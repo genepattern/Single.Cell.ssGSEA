@@ -97,11 +97,11 @@ When supplying the cell grouping (metacell) information,
    
     <img width="300" alt="Example metacell data file" src="https://github.com/genepattern/scGSEA/assets/111310290/7190d6f8-9cdf-4c63-9a5c-039f06550f23">
 
-### Job Option
+### Job Options
 * `Job memory`  
     This is the memory allocated to your scGSEA job. The default memory is 32GB; however, appropriate adjustment is recommended based on the size of your input file. 
 * `Job cpuCount`  
-    scGSEA supports parallelization of the enrichment scoring process through multi-threading. The default value is 3 and the job will be divided into 3 subprocesses. It is recommended that you increase the job cpuCount when computing enrichment scores for a large number of gene sets.
+    scGSEA supports parallelization of the enrichment scoring process through multi-threading. The default value is 3 and the job will be divided into 3 subprocesses. It is recommended that you increase the **job cpuCount** when computing enrichment scores for a large number of gene sets.
 
 ## Output Files
 <!-- list and describe any files output by the module -->
