@@ -32,7 +32,7 @@ While ssGSEA was designed for use with bulk gene expression data, scGSEA address
         <tr>
             <td colspan="1" rowspan="4" align="center">Input Files</td>
             <td>input file *</td> 
-            <td>File containing raw counts or mRNA abundance estimates to be read in</td>
+            <td>File containing raw counts or mRNA abundance estimates</td>
             <td></td>
         </tr>
         <tr>
