@@ -1,3 +1,5 @@
+# NOTE:  The method for this module is still under active development, not finalized, and should not be used.
+
 # scGSEA
 
 <!-- A brief text description of the module, usually one sentence in length. -->
