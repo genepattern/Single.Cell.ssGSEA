@@ -1,20 +1,55 @@
 ### copyright 203-2023. GenePattern Team @ Mesirov Lab - University of California, San Diego. All rights reserved.
-# 
-# To build the image use the command below:
-# DOCKER_BUILDKIT=1 docker build --platform linux/amd64 -f Dockerfile -t <scgsea tag name> .
-# Currently, module uses genepattern/seurat-suite:4.0.3 image.
-FROM genepattern/seurat-suite:4.0.3
 
-LABEL maintainer="John Jun johnjun094@cloud.ucsd.edu"
+FROM ubuntu:24.04
 
+SHELL ["/bin/bash", "-c"]
+
+WORKDIR /home/ubuntu/
+
+## Prep for package installation
+RUN apt update
+RUN apt -y upgrade
+RUN apt -y install sudo
+
+## Configure users
+RUN echo "ubuntu ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu
+
+## Install Python 3.12
+RUN apt -y install build-essential zlib1g-dev \
+libncurses5-dev libgdbm-dev libnss3-dev libssl-dev \
+libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev \
+pkg-config libhdf5-dev libpng-dev libxml2-dev liblapack-dev \
+libopenblas-dev gfortran curl
+
+RUN wget https://www.python.org/ftp/python/3.11.9/Python-3.11.9.tgz
+RUN tar -xf Python-3.11.9.tgz
+WORKDIR /home/ubuntu/Python-3.11.9
+RUN ./configure --enable-optimizations
+RUN make -j$(nproc)
+RUN make install
+WORKDIR /home/ubuntu/
+RUN rm -r Python-3.11.9.tgz Python-3.11.9/
+
+## Install pip
+RUN apt -y install python3-pip
+
+## Install Python3.11 venv
+#RUN apt -y install python3.12-venv
+RUN python3 -m pip install --upgrade virtualenv
+
+## Install sc_ssGSEA
+USER ubuntu
+RUN python3 -m virtualenv sc_ssgsea_venv
+ARG CACHEBUST=1 
+ARG REPOSITORY_URL=https://pypi.org/simple
+ARG VERSION=1.0.7
+RUN source sc_ssgsea_venv/bin/activate && \
+	python3 -m pip install --upgrade setuptools
+RUN source sc_ssgsea_venv/bin/activate && \
+	python3 -m pip install --index-url $REPOSITORY_URL --extra-index-url https://pypi.org/simple sc_ssGSEA==$VERSION
+
+## Add driver from repo
+COPY run_sc_ssgsea.py /home/ubuntu/
 USER root
-
-RUN pip3 install tqdm==4.65.0 numpy==1.23.1 matplotlib==3.6.1 scanpy==1.9.1 pandas==1.4.4 anndata==0.8.0 \
-    seaborn==0.12.0 scipy==1.9.2 networkx==2.8.7 xlsxwriter==3.0.3 openpyxl==3.0.9 mygene==3.2.2 humanfriendly==10.0
-
-RUN Rscript -e "install.packages('optparse', version='1.7.3', repos='http://cran.us.r-project.org')"
-
-# COPY R and Python scripts
-RUN mkdir /scripts
-COPY src/* /scripts/
-RUN chmod a+rwx /scripts/*
+RUN chmod 777 /home/ubuntu/run_sc_ssgsea.py
+USER ubuntu
