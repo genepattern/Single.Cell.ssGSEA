@@ -93,6 +93,31 @@ class SeuratObjectRDS:
 
 		return ret_str
 
+	def print_struct(self):
+		"""
+		"""
+		for obj in self.data:
+			self._ps_rec(obj, 0)
+
+	def _ps_rec(self, obj, level):
+		"""
+		"""
+		indent = "\t" * level
+
+		if isinstance(obj, dict):
+			print(f"{indent}|- {{{len(obj.keys())}}}")
+			for key in obj.keys():
+				print(f"{indent}\t|- {key}: ")
+				self._ps_rec(obj[key], level + 2)
+
+		elif isinstance(obj, list):
+			print(f"{indent}|- [{len(obj)}]")
+			for elem in obj:
+				self._ps_rec(elem, level + 1)
+
+		else:
+			return
+
 
 	def _get_hex_bytes(
 		self: Self,
@@ -594,7 +619,7 @@ class SEXPTYPE_SYMSXP(SEXPTYPE_Parser):
 		).parse(so, new_tabs)
 		self.tab_print(f"|-SYMSXP name is '{name}'", tabs = new_tabs)
 
-		so.add_to_cache(name)
+		so.add_to_cache(str(name))
 
 		return name, new_cursor
 
@@ -616,7 +641,7 @@ class SEXPTYPE_LISTSXP(SEXPTYPE_Parser):
 		## I'm giving up
 		if list_name == "commands":
 			so.hit_commands = True
-			return {list_name: {"val": None, "attr": None}}, new_cursor
+			return {str(list_name): {"val": None, "attr": None}}, new_cursor
 			#return [list_name, ["val", None], ["attr", None]], new_cursor
 
 		
@@ -631,7 +656,7 @@ class SEXPTYPE_LISTSXP(SEXPTYPE_Parser):
 		attrs, new_cursor = self.get_attr(so, new_cursor, new_tabs)
 
 		try:
-			return {list_name: {"val": obj, "attr": attrs}}, new_cursor
+			return {str(list_name): {"val": obj, "attr": attrs}}, new_cursor
 		except TypeError:
 			print("Unhashable list name")
 			print(self.cursor)

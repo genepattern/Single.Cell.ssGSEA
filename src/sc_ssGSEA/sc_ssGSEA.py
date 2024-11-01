@@ -7,6 +7,180 @@ from numpy import absolute, in1d, nan, full
 from numpy.random import seed
 from warnings import warn
 from multiprocessing.pool import Pool
+from scipy.sparse import csr_matrix
+from typing import List
+
+from .SeuratObject import SeuratObjectRDS
+
+
+## CLR normalization function
+def clr(vec: List[float]) -> List[float]:
+    """
+    https://www.geo.fu-berlin.de/en/v/soga-r/Advances-statistics/Feature-scales/Logratio_Transformations/index.html
+    
+    https://github.com/satijalab/seurat/blob/HEAD/R/preprocessing.R
+    return(log1p(x = x / (exp(x = sum(log1p(x = x[x > 0]), na.rm = TRUE) / length(x = x)))))
+    """
+    #denom = np.exp(sum([np.log1p(x) for x in vec[vec>0]])/len(vec))
+
+    denom = np.exp(sum([np.log1p(x) for x in vec])/len(vec))
+    
+    return [np.log1p(x/denom) for x in vec]
+
+
+def get_group_labels(
+    so: SeuratObjectRDS,
+    group_col_name: str
+) -> pd.Series:
+    """
+    Scans through the RDS data to find the metadata and its subsequent row
+    and column names, extracts the grouping column data and returns a Series.
+    """
+    for i, obj in enumerate(so.data[0]):
+        try:
+            md_data = obj["meta.data"]["val"] ## Metadata found if no KeyError here
+
+            md_n_col = len(md_data)
+            md_n_row = len(md_data[0]["val"])
+
+            md_row_names = None
+            md_col_names = None
+
+            ## Find row names
+            for j in range(i+1, len(so.data[0])):
+                try:
+                    names = so.data[0][j]["row.names"]["val"]
+
+                    if len(names) == md_n_col:
+                        md_col_names = names
+                    
+                    elif len(names) == md_n_row:
+                        md_row_names = names
+                    
+                    else:
+                        raise RuntimeError(f"Found unexpected number of dimensions {len(names)}")
+
+                    break
+                except KeyError:
+                    pass
+
+            ## Find (column) names
+            for j in range(i+1, len(so.data[0])):
+                try:
+                    names = so.data[0][j]["names"]["val"]
+
+                    if (len(names) == md_n_col) and (md_col_names is None):
+                        md_col_names = names
+
+                    elif (len(names) == md_n_row) and (md_row_names is None):
+                        md_row_names = names
+
+                    else:
+                        raise RuntimeError(f"Found unexpected number of dimensions {len(names)}")
+
+                    break
+                except KeyError:
+                    pass
+
+            ## Check for missing row and/or column names
+            if md_row_names is None:
+                raise RuntimeError("Could not find row names for metadata.")
+
+            if md_col_names is None:
+                raise RuntimeError("Could not find column names for metadata.")
+
+            ## Build result and return
+
+            group_col_indx = md_col_names.index(group_col_name)
+
+            group_s = pd.Series(
+                md_data[group_col_indx]["val"],
+                index = md_row_names
+            )
+
+            return group_s
+
+
+        except KeyError:
+            continue
+
+    raise RuntimeError("No metadata found in SeuratObject.")
+    
+
+"""
+## Build normalized metacells
+def get_metacells(
+    so: SeuratObjectRDS,
+    group_col_name: str
+) -> pd.DataFrame:
+    #Interpreter for the SeuratObjectRDS.data field since it needs to be
+    #cleaned up still. 
+    ## Parse counts matrix and row names
+    
+    ## I'm so sorry. I will have enough time to fix this someday.
+    i_vec = so.data[0][0]["assays"]["val"][0][0]["counts"]["val"][0]["i"]["val"]["val"]
+    p_vec = so.data[0][0]["assays"]["val"][0][0]["counts"]["val"][1]["p"]["val"]["val"]
+    x_vec = so.data[0][0]["assays"]["val"][0][0]["counts"]["val"][4]["x"]["val"]["val"]
+    
+    nrow, ncol = so.data[0][0]["assays"]["val"][0][0]["counts"]["val"][2]["Dim"]["val"]["val"]
+
+    dimnames = so.data[0][0]["assays"]["val"][0][0]["counts"]["val"][3]["Dimnames"]
+    rownames = dimnames["val"][0]
+    colnames = dimnames["val"][1]
+    
+    nz_row = []
+    nz_col = []
+    nz_val = []
+    
+    xi_cursor = 0
+    
+    for col_cursor in range(2, len(p_vec)):
+        n_vals_in_col = p_vec[col_cursor] - p_vec[col_cursor - 1]
+        
+        for _ in range(n_vals_in_col):
+            nz_row.append(i_vec[xi_cursor])
+            nz_col.append(col_cursor - 1)
+            nz_val.append(x_vec[xi_cursor])
+            
+            xi_cursor += 1
+            
+    sparse_mat = csr_matrix((nz_val, (nz_row, nz_col)))
+    
+    ## Normalize
+    for i in range(0, sparse_mat.shape[0]):
+        dense_row = sparse_mat[i,:].toarray()[0]
+        
+        if all(dense_row == 0):
+            continue
+        
+        norm_dense_row = clr(dense_row)
+        
+        for j in range(len(norm_dense_row)):
+            if norm_dense_row[j] != 0:
+                sparse_mat[i,j] = norm_dense_row[j]
+
+    group_s = get_group_labels(so, group_col_name)
+    
+    ## Build metacells
+    levels = group_s.unique()
+    
+    mc_d = {}
+    
+    for level in levels:
+        colnames_with_level = group_s[group_s == level].index.tolist()
+        
+        level_inds = [
+            group_s.index.tolist().index(colname)
+            for colname in colnames_with_level
+        ]
+        
+        mc_d[f"{level}"] = sparse_mat[:,level_inds].T.mean(axis = 0).tolist()[0]
+        
+    mc_df = pd.DataFrame(mc_d, index = rownames)
+    
+    return mc_df
+"""
+
 
 # ssGSEA code from PheNMF repository
 def single_sample_gsea(
@@ -195,6 +369,8 @@ def run_ssgsea_parallel(
         n_job (int): Number of processors to use
         file_path (str|None): Path to store ssGSEA results if desired
     """
+
+    """
     if n_job <= gene_x_sample.shape[1]:
         print("Parallelizing scGSEA across cell clusters")
         score__gene_set_x_sample = pd.concat(
@@ -220,6 +396,11 @@ def run_ssgsea_parallel(
                 n_job,
             ), sort = False, axis = 0
         )
+    """
+    score__gene_set_x_sample = _single_sample_gseas(
+        gene_x_sample,
+        gene_sets
+    )
 
     ## Assure columns come out in same order they came in
     score__gene_set_x_sample = score__gene_set_x_sample[gene_x_sample.columns]
