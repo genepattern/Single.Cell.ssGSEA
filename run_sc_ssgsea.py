@@ -2,7 +2,7 @@ import argparse
 import json
 import sys
 
-from sc_ssGSEA import SeuratObjectRDS, get_metacells, read_gmts, run_ssgsea_parallel, Expression
+from sc_ssGSEA import read_gmts, run_ssgsea_parallel, Expression
 
 print(sys.argv)
 parser = argparse.ArgumentParser()
