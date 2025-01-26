@@ -37,6 +37,8 @@ def get_group_labels(
     and column names, extracts the grouping column data and returns a Series.
     """
     for i, obj in enumerate(so.data[0]):
+        print(list(obj.keys()))
+
         try:
             md_data = obj["meta.data"]["val"] ## Metadata found if no KeyError here
 

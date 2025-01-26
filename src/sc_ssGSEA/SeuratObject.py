@@ -46,7 +46,8 @@ class SeuratObjectRDS:
 	"""
 	filepath: str
 	debug_bytes: int
-	xdr_hex: List[str]
+	#xdr_hex: List[str]
+	xdr_hex: bytes
 	header_length: int
 	encoding_length: int
 	encoding: str
@@ -123,7 +124,8 @@ class SeuratObjectRDS:
 		self: Self,
 		start: int,
 		n_bytes: int
-	) -> List[str]:
+	#) -> List[str]:
+	) -> bytes:
 		"""
 		Get a segment of the hex-encoded data inclusive of the end
 
@@ -144,7 +146,7 @@ class SeuratObjectRDS:
 
 	def _get_ascii_from_hex_bytes(
 		self: Self,
-		hex_bytes: List[str]
+		hex_bytes: bytes
 	) -> str:
 		"""
 		Given a list of hex-encoded bytes, return an ASCII string.
@@ -159,7 +161,8 @@ class SeuratObjectRDS:
 		str
 			The ASCII string decoded from the hex bytes.
 		"""
-		return bytearray.fromhex(''.join(hex_bytes)).decode()
+		#return bytearray.fromhex(''.join(hex_bytes)).decode()
+		return hex_bytes.decode()
 
 
 	class RDSFormatError(Exception):
@@ -168,7 +171,7 @@ class SeuratObjectRDS:
 		"""
 		def __init__(
 			self: Self, 
-			format_byte: str
+			format_byte: int
 		) -> None:
 			"""
 			Construct message to alert that the format byte indicates this file
@@ -191,7 +194,8 @@ class SeuratObjectRDS:
 		"""
 		format_byte = self._get_hex_bytes(0, 1)[0]
 		
-		if format_byte != "58":
+		#if format_byte != "58":
+		if format_byte != 0x58:
 			raise self.RDSFormatError(format_byte)
 
 
@@ -213,19 +217,21 @@ class SeuratObjectRDS:
 			else:
 				rds_bytes = f.read()
 
-		xdr_hex_pairs = [
-			rds_bytes[i:i+1].hex()
-			for i in range(len(rds_bytes))
-		]
+		#xdr_hex_pairs = [
+		#	rds_bytes[i:i+1].hex()
+		#	for i in range(len(rds_bytes))
+		#]
 
-		self.xdr_hex = xdr_hex_pairs
+		#self.xdr_hex = xdr_hex_pairs
+		self.xdr_hex = rds_bytes
 
 		self._check_format()
 
 
 	def _get_int_from_hex(
 		self: Self,
-		hex_bytes: List[str]
+		#hex_bytes: List[str]
+		hex_bytes: bytes
 	) -> int:
 		"""
 		Given a string of hex bytes, interpret it as an integer.
@@ -240,12 +246,13 @@ class SeuratObjectRDS:
 		int
 			A base-10 integer encoded by `hex_bytes`.
 		"""
-		return int(''.join(hex_bytes), 16)
+		#return int(''.join(hex_bytes), 16)
+		return int.from_bytes(hex_bytes, "big")
 
 
 	def _get_chars_from_hex(
 		self: Self,
-		hex_bytes: List[str]
+		hex_bytes: bytes
 	) -> str:
 		"""
 		Given a string of hex bytes, interpret it as a character string.
@@ -260,16 +267,20 @@ class SeuratObjectRDS:
 		str
 			The string encoded by `hex_bytes`.
 		"""
-		ascii_str = ""
+		#ascii_str = ""
 
-		for byte in hex_bytes:
+		#for byte in hex_bytes:
 			#if 0x20 < int(byte, 16) < 0x7F or int(byte, 16) == 0:
-			if int(byte, 16) < 0x7F:
-				ascii_str = ascii_str + bytearray([int(byte, 16)]).decode()
-			else:
-				raise ValueError(f"Got byte {byte}, cannot be interpreted as a printable ASCII character")
+			#if int(byte, 16) < 0x7F:
+		#	if byte < 0x7F:
+				#ascii_str = ascii_str + bytearray([int(byte, 16)]).decode()
+				#ascii_str = ascii_str = bytearray(byte).decode()
+		#	else:
+		#		raise ValueError(f"Got byte {byte}, cannot be interpreted as a printable ASCII character")
 
-		return ascii_str
+		return hex_bytes.decode()
+
+		#return ascii_str
 
 
 	def _get_encoding(
@@ -436,12 +447,14 @@ class SEXPTYPE_Parser:
 	@classmethod
 	def get_sexptype_parser(
 		cls,
-		hex_str: List[str],
+		#hex_str: List[str],
+		hex_str: bytes,
 		cursor: int
 	) -> "SEXPTYPE_Parser":
 		"""
 		"""
-		orig_header = int(''.join(hex_str), 16)
+		#orig_header = int(''.join(hex_str), 16)
+		orig_header = int.from_bytes(hex_str, byteorder = "big")
 		code =  orig_header & 0x000000ff
 		#code = int(''.join(hex_str), 16) & 0x0000001f
 
@@ -778,7 +791,13 @@ class SEXPTYPE_REALSXP(SEXPTYPE_Parser):
 		doubles = []
 
 		for i in range(n_doubles):
-			doubles.append(struct.unpack('>d', bytearray.fromhex(''.join(so._get_hex_bytes(new_cursor, 8))))[0])
+			#doubles.append(struct.unpack('>d', bytearray.fromhex(''.join(so._get_hex_bytes(new_cursor, 8))))[0])
+			doubles.append(
+				struct.unpack(
+					'>d',
+					so._get_hex_bytes(new_cursor, 8)
+				)[0]
+			)
 			new_cursor += 8
 
 		self.tab_print(f"|-REALSXP First values are {','.join(map(lambda x: str(round(x, 2)), doubles[:5]))}...", tabs = new_tabs)
