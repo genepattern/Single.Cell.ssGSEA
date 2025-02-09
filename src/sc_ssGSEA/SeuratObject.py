@@ -23,8 +23,7 @@ https://cran.r-project.org/doc/manuals/r-release/R-ints.pdf
 
 from abc import abstractmethod
 import gzip
-from os import altsep, curdir
-from typing import cast, Dict, List, Optional, Tuple, TypedDict, Union
+from typing import cast, Dict, List, Optional, Tuple, TypedDict, Union, overload
 from typing_extensions import Self
 import struct
 import sys
@@ -56,6 +55,8 @@ class SeuratObjectRDS:
 	data: List
 
 	char_cache: Dict[int, str] = {}
+
+	code_cache: Dict[int, str] = {}
 
 	hit_commands: bool = False
 
@@ -278,9 +279,9 @@ class SeuratObjectRDS:
 		#	else:
 		#		raise ValueError(f"Got byte {byte}, cannot be interpreted as a printable ASCII character")
 
-		return hex_bytes.decode()
-
-		#return ascii_str
+		return hex_bytes.decode(
+			errors = "ignore"
+		)
 
 
 	def _get_encoding(
@@ -389,6 +390,18 @@ class TypeNotImplementedError(NotImplementedError):
 		)
 
 
+class ExpectedRedirectError(NotImplementedError):
+	def __init__(
+		self: Self,
+		called_parser_name: str,
+		expected_parser_name: str
+	) -> None:
+		super().__init__(
+			f"Invoked SEXPTYPE {called_parser_name}, which should be "
+			f"redirected to {expected_parser_name}"
+		)
+
+
 ## Parser methods
 class SEXPTYPE_Parser:
 	cursor: int
@@ -443,6 +456,9 @@ class SEXPTYPE_Parser:
 	def __init__(self, orig_header: int, cursor: int):
 		self.orig_header = orig_header
 		self.cursor = cursor + 4
+
+	def __str__(self) -> str:
+		return self.__class__.__name__
 
 	@classmethod
 	def get_sexptype_parser(
@@ -517,10 +533,12 @@ class SEXPTYPE_Parser:
 				return SEXPTYPE_UNBOUNDVALUE_SXP(orig_header, cursor)
 			case cls.MISSINGARG_SXP:
 				return SEXPTYPE_MISSINGARG_SXP(orig_header, cursor)
+				#return SEXPTYPE_NILSXP(orig_header, cursor)
 			case cls.BASENAMESPACE_SXP:
 				return SEXPTYPE_BASENAMESPACE_SXP(orig_header, cursor)
 			case cls.NAMESPACESXP:
 				return SEXPTYPE_NAMESPACESXP(orig_header, cursor)
+				#return SEXPTYPE_ENVSXP(orig_header, cursor)
 			case cls.PACKAGESXP:
 				return SEXPTYPE_PACKAGESXP(orig_header, cursor)
 			case cls.PERSISTSXP:
@@ -564,11 +582,12 @@ class SEXPTYPE_Parser:
 	def tab_print_start(
 		self: Self,
 		cursor: int,
-		tabs: Optional[int] = None
+		tabs: Optional[int] = None,
+		subfield: str = ""
 	) -> None:
 		if tabs is not None:
 			output = '  ' * tabs
-			output += f"|-Parsing {type(self)} (code {self.get_code()}) at byte {cursor}"
+			output += f"|-Parsing {self.__class__.__name__}:{subfield} (code {self.get_code()}) at byte {cursor}"
 			print(output)
 
 	def tab_print(
@@ -580,6 +599,16 @@ class SEXPTYPE_Parser:
 			output = '  ' * tabs
 			output += msg
 			print(output)
+
+	def has_attr(
+		self,
+	) -> bool:
+		return ((self.orig_header & (1 << 9)) >> 9) > 0
+
+	def has_tag(
+		self
+	) -> bool:
+		return ((self.orig_header & (1 << 10)) >> 10) > 0
 
 	def get_attr(
 		self: Self,
@@ -612,18 +641,25 @@ class SEXPTYPE_Parser:
 
 		return attrs, new_cursor
 
+	@overload
+	def init_parser(self, tabs: int) -> int: ...
+	@overload
+	def init_parser(self, tabs: None) -> None: ...
+	def init_parser(self, tabs: Optional[int]) -> Optional[int]:
+		self.tab_print_start(self.cursor, tabs)
+		return tabs + 1 if tabs is not None else None
+
 
 class SEXPTYPE_NILSXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
 		self.tab_print_start(self.cursor, tabs)
 
-		return None, self.cursor + 4
+		return None, self.cursor
 
 
 class SEXPTYPE_SYMSXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		self.tab_print_start(self.cursor, tabs)
-		new_tabs = tabs + 1 if tabs is not None else None
+		new_tabs = self.init_parser(tabs)
 
 		new_cursor = self.cursor
 
@@ -634,58 +670,148 @@ class SEXPTYPE_SYMSXP(SEXPTYPE_Parser):
 
 		so.add_to_cache(str(name))
 
-		return name, new_cursor
+		self.tab_print(f"|-SYMSXP parsing value", tabs = new_tabs)
+
+		value, new_cursor = self.get_sexptype_parser(
+			so._get_hex_bytes(new_cursor, 4), new_cursor
+		).parse(so, new_tabs)
+
+		assert isinstance(name, str)
+
+		#return {name: value}, new_cursor
+		#return [name, value], new_cursor
+
+		if value is None:
+			return name, new_cursor
+		else:
+			return {name: value}, new_cursor
 
 
 class SEXPTYPE_LISTSXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		self.tab_print_start(self.cursor, tabs)
-		new_tabs = tabs + 1 if tabs is not None else None
+		new_tabs = self.init_parser(tabs)
 
 		new_cursor = self.cursor
 
-		self.tab_print(f"|-LISTSXP parsing name.", tabs = new_tabs)
-		list_name_parser = self.get_sexptype_parser(
+		self.tab_print(f"|-LISTSXP parsing car", tabs = new_tabs)
+
+		if self.has_attr():
+			attrs, new_cursor = self.get_sexptype_parser(
+				so._get_hex_bytes(new_cursor, 4), new_cursor
+			).parse(so, new_tabs)
+		else:
+			attrs = None
+
+		#if self.has_tag():
+		#	tag, new_cursor = self.get_sexptype_parser(
+		#		so._get_hex_bytes(new_cursor, 4), new_cursor
+		#	).parse(so, new_tabs)
+		#else:
+		#	tag = None
+
+		car, new_cursor = self.get_sexptype_parser(
 			so._get_hex_bytes(new_cursor, 4), new_cursor
-		)
+		).parse(so, new_tabs)
 
-		list_name, new_cursor = list_name_parser.parse(so, new_tabs)
+		#if car is None:
+		#	return None, new_cursor
 
-		## I'm giving up
-		if list_name == "commands":
-			so.hit_commands = True
-			return {str(list_name): {"val": None, "attr": None}}, new_cursor
-			#return [list_name, ["val", None], ["attr", None]], new_cursor
+		self.tab_print(f"|-LISTSXP parsing cdr", tabs = new_tabs)
 
-		
-		self.tab_print(f"|-LISTSXP parsing cdr in list '{str(list_name)[:100]}...'", tabs = new_tabs)
-		next_parser = self.get_sexptype_parser(
+		cdr, new_cursor = self.get_sexptype_parser(
 			so._get_hex_bytes(new_cursor, 4), new_cursor
-		)
+		).parse(so, new_tabs)
 
-		obj, new_cursor = next_parser.parse(so, new_tabs)
-
-		self.tab_print(f"|-LISTSXP Checking attributes", tabs = new_tabs)
-		attrs, new_cursor = self.get_attr(so, new_cursor, new_tabs)
-
-		try:
-			return {str(list_name): {"val": obj, "attr": attrs}}, new_cursor
-		except TypeError:
-			print("Unhashable list name")
-			print(self.cursor)
-			print(str(list_name)[:100]+"...")
-			print(so.xdr_hex[self.cursor-4:self.cursor+200])
-			sys.exit(1)
+		return {"list": [car, cdr], "attr": attrs}, new_cursor
 
 
 class SEXPTYPE_CLOSXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		raise TypeNotImplementedError(self)
+		new_tabs = self.init_parser(tabs)
+
+		new_cursor = self.cursor
+
+		if self.has_attr():
+			attrs, new_cursor = self.get_sexptype_parser(
+				so._get_hex_bytes(new_cursor, 4), new_cursor
+			).parse(so, new_tabs)
+		else:
+			attrs = None
+
+		if self.has_tag():
+			tag, new_cursor = self.get_sexptype_parser(
+				so._get_hex_bytes(new_cursor, 4), new_cursor
+			).parse(so, new_tabs)
+		else:
+			tag = None
+
+		## Parse environment
+
+		environment, new_cursor = self.get_sexptype_parser(
+			so._get_hex_bytes(new_cursor, 4), new_cursor
+		).parse(so, tabs = new_tabs)
+
+		## Parse formal args
+
+		args = []
+
+		next_parser = self.get_sexptype_parser(
+			so._get_hex_bytes(new_cursor, 4), new_cursor
+		)
+
+		while not isinstance(next_parser, SEXPTYPE_NILVALUE_SXP):
+			arg, new_cursor = next_parser.parse(so, tabs = new_tabs)
+
+			args.append(arg)
+
+			next_parser = self.get_sexptype_parser(
+				so._get_hex_bytes(new_cursor, 4), new_cursor
+			)
+
+		## Parse body/bytecode
+
+		#new_cursor += 4
+
+		bytecode, new_cursor = self.get_sexptype_parser(
+			so._get_hex_bytes(new_cursor, 4), new_cursor
+		).parse(so, tabs = new_tabs)
+
+		res =  {
+			"enviornment": environment,
+			"args": args,
+			"bytecode": bytecode,
+			"attr": attrs
+		}
+
+		print(res)
+
+		return res, new_cursor
 
 
 class SEXPTYPE_ENVSXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		raise TypeNotImplementedError(self)
+		new_tabs = self.init_parser(tabs)
+
+		new_cursor = self.cursor
+
+		## Lock int
+		_, new_cursor = self.get_sexptype_parser(
+			so._get_hex_bytes(new_cursor, 4), new_cursor
+		).parse(so, tabs = new_tabs)
+
+		res = []
+
+		while True:
+			next_res, new_cursor = self.get_sexptype_parser(
+				so._get_hex_bytes(new_cursor, 4), new_cursor
+			).parse(so, tabs = new_tabs)
+
+			if next_res is None:
+				break
+			else:
+				res.append(next_res)
+
+		return res, new_cursor
 
 
 class SEXPTYPE_PROMSXP(SEXPTYPE_Parser):
@@ -695,7 +821,39 @@ class SEXPTYPE_PROMSXP(SEXPTYPE_Parser):
 
 class SEXPTYPE_LANGSXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		raise TypeNotImplementedError(self)
+		#raise TypeNotImplementedError(self)
+		new_tabs = self.init_parser(tabs)
+		new_cursor = self.cursor
+
+		#if self.has_attr():
+		#	attrs, new_cursor = self.get_sexptype_parser(
+		#		so._get_hex_bytes(new_cursor, 4), new_cursor
+		#	).parse(so, new_tabs)
+		#else:
+		#	attrs = None
+
+		#if self.has_tag():
+		#	tag, new_cursor = self.get_sexptype_parser(
+		#		so._get_hex_bytes(new_cursor, 4), new_cursor
+		#	).parse(so, new_tabs)
+		#else:
+		#	tag = None
+
+		new_cursor += 8
+
+		self.tab_print(f"|-LANGSXP Parsing CAR", tabs = new_tabs)
+		
+		car, new_cursor = self.get_sexptype_parser(
+			so._get_hex_bytes(new_cursor, 4), new_cursor
+		).parse(so, tabs = new_tabs)
+
+		self.tab_print(f"|-LANGSXP Parsing CDR", tabs = new_tabs)
+		
+		cdr, new_cursor = self.get_sexptype_parser(
+			so._get_hex_bytes(new_cursor, 4), new_cursor
+		).parse(so, tabs = new_tabs)
+
+		return [car, cdr], new_cursor
 
 
 class SEXPTYPE_SPECIALSXP(SEXPTYPE_Parser):
@@ -710,8 +868,7 @@ class SEXPTYPE_BUILTINSXP(SEXPTYPE_Parser):
 
 class SEXPTYPE_CHARSXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		self.tab_print_start(self.cursor, tabs)
-		new_tabs = tabs + 1 if tabs is not None else None
+		new_tabs = self.init_parser(tabs)
 
 		new_cursor = self.cursor
 
@@ -727,8 +884,7 @@ class SEXPTYPE_CHARSXP(SEXPTYPE_Parser):
 
 class SEXPTYPE_LGLSXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		self.tab_print_start(self.cursor, tabs)
-		new_tabs = tabs + 1 if tabs is not None else None
+		new_tabs = self.init_parser(tabs)
 
 		new_cursor = self.cursor
 
@@ -745,18 +901,24 @@ class SEXPTYPE_LGLSXP(SEXPTYPE_Parser):
 
 		self.tab_print(f"|-LGLSXP First values are {','.join(map(str, bool_l[:5]))}...", tabs = new_tabs)
 
-		self.tab_print(f"|-LGLSXP Checking attributes", tabs = new_tabs)
-		attrs, new_cursor = self.get_attr(so, new_cursor, new_tabs)
+		#self.tab_print(f"|-LGLSXP Checking attributes", tabs = new_tabs)
+		#attrs, new_cursor = self.get_attr(so, new_cursor, new_tabs)
 
-		return {"val": bool_l, "attr": attrs}, new_cursor
+		#return {"val": bool_l, "attr": attrs}, new_cursor
+		if len(bool_l) == 1:
+			return bool_l[0], new_cursor
+		else:
+			return bool_l, new_cursor
 
 
 class SEXPTYPE_INTSXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		self.tab_print_start(self.cursor, tabs)
-		new_tabs = tabs + 1 if tabs is not None else None
+		new_tabs = self.init_parser(tabs)
 
 		new_cursor = self.cursor
+
+		#if self.has_attr:
+		#	new_cursor += 4
 
 		n_ints = so._get_int_from_hex(so._get_hex_bytes(new_cursor, 4))
 		self.tab_print(f"|-INTSXP Integer vector has {n_ints} values", tabs = new_tabs)
@@ -771,16 +933,19 @@ class SEXPTYPE_INTSXP(SEXPTYPE_Parser):
 
 		self.tab_print(f"|-INTSXP First values are {','.join(map(str, int_l[:5]))}...", tabs = new_tabs)
 
-		self.tab_print(f"|-INTSXP Checking attributes", tabs = new_tabs)
-		attrs, new_cursor = self.get_attr(so, new_cursor, new_tabs)
+		#self.tab_print(f"|-INTSXP Checking attributes", tabs = new_tabs)
+		#attrs, new_cursor = self.get_attr(so, new_cursor, new_tabs)
 
-		return {"val": int_l, "attr": attrs}, new_cursor
+		#return {"val": int_l, "attr": attrs}, new_cursor
+		if len(int_l) == 1:
+			return int_l[0], new_cursor
+		else:
+			return int_l, new_cursor
 
 
 class SEXPTYPE_REALSXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		self.tab_print_start(self.cursor, tabs)
-		new_tabs = tabs + 1 if tabs is not None else None
+		new_tabs = self.init_parser(tabs)
 
 		new_cursor = self.cursor
 
@@ -802,10 +967,13 @@ class SEXPTYPE_REALSXP(SEXPTYPE_Parser):
 
 		self.tab_print(f"|-REALSXP First values are {','.join(map(lambda x: str(round(x, 2)), doubles[:5]))}...", tabs = new_tabs)
 
-		self.tab_print(f"|-REALSXP Checking attributes", tabs = new_tabs)
-		attrs, new_cursor = self.get_attr(so, new_cursor, new_tabs)
+		#self.tab_print(f"|-REALSXP Checking attributes", tabs = new_tabs)
+		#attrs, new_cursor = self.get_attr(so, new_cursor, new_tabs)
 
-		return {"val": doubles, "attr": attrs}, new_cursor
+		if len(doubles) == 1:
+			return doubles[0], new_cursor
+		else:
+			return doubles, new_cursor
 
 
 class SEXPTYPE_CPLXSXP(SEXPTYPE_Parser):
@@ -815,8 +983,7 @@ class SEXPTYPE_CPLXSXP(SEXPTYPE_Parser):
 
 class SEXPTYPE_STRSXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		self.tab_print_start(self.cursor, tabs)
-		new_tabs = tabs + 1 if tabs is not None else None
+		new_tabs = self.init_parser(tabs)
 
 		new_cursor = self.cursor
 
@@ -833,7 +1000,10 @@ class SEXPTYPE_STRSXP(SEXPTYPE_Parser):
 
 			char_vecs.append(char_vec)
 
-		return char_vecs, new_cursor
+		if len(char_vecs) == 1:
+			return char_vecs[0], new_cursor
+		else:
+			return char_vecs, new_cursor
 
 
 class SEXPTYPE_DOTSXP(SEXPTYPE_Parser):
@@ -848,8 +1018,7 @@ class SEXPTYPE_ANYSXP(SEXPTYPE_Parser):
 
 class SEXPTYPE_VECSXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		self.tab_print_start(self.cursor, tabs)
-		new_tabs = tabs + 1 if tabs is not None else None
+		new_tabs = self.init_parser(tabs)
 
 		new_cursor = self.cursor
 
@@ -876,8 +1045,7 @@ class SEXPTYPE_VECSXP(SEXPTYPE_Parser):
 
 class SEXPTYPE_EXPRSXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		self.tab_print_start(self.cursor, tabs)
-		new_tabs = tabs + 1 if tabs is not None else None
+		new_tabs = self.init_parser(tabs)
 
 		new_cursor = self.cursor
 
@@ -903,7 +1071,32 @@ class SEXPTYPE_EXPRSXP(SEXPTYPE_Parser):
 
 class SEXPTYPE_BCODESXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		raise TypeNotImplementedError(self)
+		new_tabs = self.init_parser(tabs)
+
+		new_cursor = self.cursor
+
+		self.tab_print(f"|-BCODESXP parsing codes")
+
+		new_cursor += 4
+
+		code, new_cursor = self.get_sexptype_parser(
+			so._get_hex_bytes(new_cursor, 4), new_cursor
+		).parse(so, tabs = new_tabs)
+
+		n_constants = so._get_int_from_hex(so._get_hex_bytes(new_cursor, 4))
+		self.tab_print(f"|-BCODESXP parsing {n_constants} constants", tabs = new_tabs)
+		new_cursor += 4
+
+		constants = []
+
+		for i in range(n_constants):
+			const, new_cursor = self.get_sexptype_parser(
+				so._get_hex_bytes(new_cursor, 4), new_cursor
+			).parse(so, tabs = new_tabs)
+
+			constants.append(const)
+
+		return {"code": code, "constants": constants}, new_cursor
 
 
 class SEXPTYPE_EXTPTRSXP(SEXPTYPE_Parser):
@@ -923,8 +1116,7 @@ class SEXPTYPE_RAWSXP(SEXPTYPE_Parser):
 
 class SEXPTYPE_S4SXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		self.tab_print_start(self.cursor, tabs)
-		new_tabs = tabs + 1 if tabs is not None else None
+		new_tabs = self.init_parser(tabs)
 
 		new_cursor = self.cursor
 
@@ -932,7 +1124,8 @@ class SEXPTYPE_S4SXP(SEXPTYPE_Parser):
 
 		last_was_null = False
 
-		while not so.hit_commands:
+		#while not so.hit_commands:
+		while new_cursor < len(so.xdr_hex):
 			next_parser = self.get_sexptype_parser(
 				so._get_hex_bytes(new_cursor, 4), new_cursor
 			)
@@ -967,8 +1160,7 @@ class SEXPTYPE_S4SXP(SEXPTYPE_Parser):
 
 class SEXPTYPE_REFSXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		self.tab_print_start(self.cursor, tabs)
-		new_tabs = tabs + 1 if tabs is not None else None
+		new_tabs = self.init_parser(tabs)
 
 		new_cursor = self.cursor
 
@@ -976,9 +1168,10 @@ class SEXPTYPE_REFSXP(SEXPTYPE_Parser):
 		try:
 			name = so.char_cache[name_key]
 		except:
-			print(name_key)
-			print(so.char_cache)
-			exit(1)
+			#print(name_key)
+			#print(so.char_cache)
+			#exit(1)
+			name = "_refsxp_cache_miss_"
 		self.tab_print(f"|-REFSXP Cached symbols is '{name}' at key {name_key}", tabs = new_tabs)
 
 		return name, new_cursor
@@ -988,7 +1181,8 @@ class SEXPTYPE_NILVALUE_SXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
 		self.tab_print_start(self.cursor, tabs)
 
-		return None, self.cursor + 4
+		#return None, self.cursor + 4
+		return None, self.cursor
 
 
 class SEXPTYPE_GLOBALENV_SXP(SEXPTYPE_Parser):
@@ -1003,7 +1197,11 @@ class SEXPTYPE_UNBOUNDVALUE_SXP(SEXPTYPE_Parser):
 
 class SEXPTYPE_MISSINGARG_SXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		raise TypeNotImplementedError(self)
+		new_tabs = self.init_parser(tabs)
+
+		new_cursor = self.cursor
+
+		return "missing", new_cursor + 4
 
 
 class SEXPTYPE_BASENAMESPACE_SXP(SEXPTYPE_Parser):
@@ -1013,7 +1211,16 @@ class SEXPTYPE_BASENAMESPACE_SXP(SEXPTYPE_Parser):
 
 class SEXPTYPE_NAMESPACESXP(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		raise TypeNotImplementedError(self)
+		new_tabs = self.init_parser(tabs)
+
+		new_cursor = self.cursor
+
+		orig_header = int.from_bytes(
+			so._get_hex_bytes(new_cursor, 4), 
+			byteorder = "big"
+		)
+
+		return SEXPTYPE_STRSXP(orig_header, new_cursor).parse(so, new_tabs)
 
 
 class SEXPTYPE_PACKAGESXP(SEXPTYPE_Parser):
@@ -1038,12 +1245,26 @@ class SEXPTYPE_GENERICREFSXP(SEXPTYPE_Parser):
 
 class SEXPTYPE_BCREPDEF(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		raise TypeNotImplementedError(self)
+		#raise TypeNotImplementedError(self)
+		new_tabs = self.init_parser(tabs)
+
+		new_cursor = self.cursor
+
+		new_cursor += 4
+
+		return self.get_sexptype_parser(
+			so._get_hex_bytes(new_cursor, 4), new_cursor
+		).parse(so, tabs = new_tabs)
 
 
 class SEXPTYPE_BCREPREF(SEXPTYPE_Parser):
 	def parse(self, so, tabs = None):
-		raise TypeNotImplementedError(self)
+		#raise TypeNotImplementedError(self)
+		new_tabs = self.init_parser(tabs)
+
+		new_cursor = self.cursor
+
+		return "rep_val", new_cursor + 4
 
 
 class SEXPTYPE_EMPTYENV_SXP(SEXPTYPE_Parser):
@@ -1071,8 +1292,7 @@ class SEXPTYPE_ALTREP_SXP(SEXPTYPE_Parser):
 		#print(so.xdr_hex[self.cursor-4:self.cursor+50])
 
 		## Try to just parse at the next byte and see what happens?? 
-		self.tab_print_start(self.cursor, tabs)
-		new_tabs = tabs + 1 if tabs is not None else None
+		new_tabs = self.init_parser(tabs)
 
 		new_cursor = self.cursor
 
