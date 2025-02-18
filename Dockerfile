@@ -1,20 +1,40 @@
 ### copyright 203-2023. GenePattern Team @ Mesirov Lab - University of California, San Diego. All rights reserved.
-# 
-# To build the image use the command below:
-# DOCKER_BUILDKIT=1 docker build --platform linux/amd64 -f Dockerfile -t <scgsea tag name> .
-# Currently, module uses genepattern/seurat-suite:4.0.3 image.
-FROM genepattern/seurat-suite:4.0.3
 
-LABEL maintainer="John Jun johnjun094@cloud.ucsd.edu"
+FROM satijalab/seurat:5.0.0
 
-USER root
+SHELL ["/bin/bash", "-c"]
 
-RUN pip3 install tqdm==4.65.0 numpy==1.23.1 matplotlib==3.6.1 scanpy==1.9.1 pandas==1.4.4 anndata==0.8.0 \
-    seaborn==0.12.0 scipy==1.9.2 networkx==2.8.7 xlsxwriter==3.0.3 openpyxl==3.0.9 mygene==3.2.2 humanfriendly==10.0
+## Install Python 3.11.9
 
-RUN Rscript -e "install.packages('optparse', version='1.7.3', repos='http://cran.us.r-project.org')"
+RUN wget https://www.python.org/ftp/python/3.11.9/Python-3.11.9.tgz
+RUN tar -xf Python-3.11.9.tgz
+WORKDIR /Python-3.11.9
+RUN ./configure --enable-optimizations
+RUN make -j$(nproc)
+RUN make install
+WORKDIR /
+RUN rm -r Python-3.11.9.tgz Python-3.11.9/
 
-# COPY R and Python scripts
-RUN mkdir /scripts
-COPY src/* /scripts/
-RUN chmod a+rwx /scripts/*
+## Install pip
+
+RUN apt -y install python3-pip
+
+## Install Python3.11 venv
+
+RUN python3 -m pip install --upgrade virtualenv
+
+## Install sc_ssGSEA
+
+ARG CACHEBUST=1 
+RUN python3 -m virtualenv sc_ssgsea_venv
+RUN source sc_ssgsea_venv/bin/activate && \
+	python3 -m pip install --upgrade setuptools
+COPY ./ sc_ssGSEA_local
+RUN source sc_ssgsea_venv/bin/activate && \
+	python3 -m pip install /sc_ssGSEA_local
+
+## Add driver from repo
+COPY run_sc_ssgsea.py /
+RUN chmod 777 run_sc_ssgsea.py
+
+CMD ["/bin/bash"]
