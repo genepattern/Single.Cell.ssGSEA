@@ -37,4 +37,4 @@ RUN source sc_ssgsea_venv/bin/activate && \
 COPY run_sc_ssgsea.py /
 RUN chmod 777 run_sc_ssgsea.py
 
-CMD ["/bin/bash"]
+CMD ["/bin/bash && source sc_ssgsea_venv/bin/activate"]

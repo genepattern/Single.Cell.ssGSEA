@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="" default="create-zip" name="scGSEA">
+<project basedir="" default="create-zip" name="Single.Cell.ssGSEA">
 <property name="dirOffset" value="../common_module_code" />
 <import file="${dirOffset}/commontargets.xml" />
 
@@ -7,8 +7,11 @@
     <antcall target="prezip"/>
     <zip destfile="${dest.dir}/${ant.project.name}.zip" whenempty="fail" defaultexcludes="true">
         <fileset dir="." includes="manifest, paramgroups.json, LICENSE, Dockerfile"/>
-        <fileset dir="src" includes="*.R"/>
-        <fileset dir="src" includes="*.py"/>
+        <fileset dir="src/sc_ssGSEA" includes="*.R"/>
+        <fileset dir="src/sc_ssGSEA" includes="*.py"/>
+        <fileset dir="src/sc_ssGSEA" includes="*.sh"/>
+        <fileset dir="." includes="*.sh"/>
+        <fileset dir="." includes="*.py"/>
     </zip>
     <antcall target="postzip"/>
 </target>

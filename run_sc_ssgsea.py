@@ -2,12 +2,14 @@ import argparse
 import json
 import sys
 
-from sc_ssGSEA import read_gmts, run_ssgsea_parallel, Expression
+from sc_ssGSEA_local.src.sc_ssGSEA.sc_ssGSEA import read_gmts, run_ssgsea_parallel
+from sc_ssGSEA_local.src.sc_ssGSEA.Expression import *
 
 print(sys.argv)
 parser = argparse.ArgumentParser()
 
 parser.add_argument(
+    
 	"--input_file",
 	type=str,
 	help="Input file",
