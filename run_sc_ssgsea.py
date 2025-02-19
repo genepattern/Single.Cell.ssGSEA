@@ -25,7 +25,7 @@ parser.add_argument(
 	"--output_file_name",
 	type=str,
 	help="filename to use for output files",
-	default='False'
+	default='scores'
 )
 
 parser.add_argument(
