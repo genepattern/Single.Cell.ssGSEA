@@ -4,6 +4,10 @@ FROM satijalab/seurat:5.0.0
 
 SHELL ["/bin/bash", "-c"]
 
+## Install Linux packages
+
+RUN apt-get install -y libbz2-dev
+
 ## Install Python 3.11.9
 
 RUN wget https://www.python.org/ftp/python/3.11.9/Python-3.11.9.tgz

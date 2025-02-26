@@ -1,11 +1,13 @@
 from abc import ABC, abstractmethod
 import inspect
+import math
 import numpy as np
 import pandas as pd
 from scipy.io import mmread
-from scipy.sparse import csr_matrix
-from typing import List, Optional, Type
-import h5py
+from scipy.sparse import spmatrix, csr_matrix
+from typing import List, Optional, Type, Union
+#import h5py
+import scanpy as sc
 import subprocess
 import sys
 
@@ -347,52 +349,101 @@ class H5Seurat_Expression(Expression):
 
 
 class H5AD_Expression(Expression):
+	def _probably_all_ints(
+		self,
+		vals: List[float]
+	) -> bool:
+		return all([
+			math.isclose(x, round(x))
+			for x in vals
+		])
+
+	def _mat_is_valid(
+		self,
+		X: np.ndarray | spmatrix | None
+	) -> bool:
+		"""
+		"""
+		if X is None:
+			return False
+
+		if isinstance(X, np.ndarray):
+			first_row: List[float] = X[0,:].tolist()
+
+		else: ## assume sparse
+			first_row: List[float] = X[0,:].toarray()[0,:].tolist() #type: ignore
+
+		return self._probably_all_ints(first_row)
+
+	def _X_to_csr(
+		self,
+		X: np.ndarray | spmatrix | None
+	) -> csr_matrix:
+		"""
+		"""
+		assert X is not None
+
+		if isinstance(X, np.ndarray):
+			return csr_matrix(X).T
+
+		else:
+			return X.tocsr().T
+
+
 	def load(self) -> None:
 		"""
 		"""
-		h5_file = h5py.File(self._filepath)
 
-		## Extract expression and convert to sparse matrix + normalize
+		## Extract expression from adata.raw.X (because must be counts)
 
-		expr = h5_file["X"]
+		adata = sc.read_h5ad(self._filepath)
+		raw_adata = adata.raw.to_adata()
 
-		sparse_mat = csr_matrix(
-			(expr["data"], expr["indices"], expr["indptr"])
-		).T
+		if not self._mat_is_valid(raw_adata.X):
+			raise ValueError((
+				"No counts found in input AnnData object. Object must have "
+				".raw` populated, and data retrieved by calling "
+				"`adata.raw.to_adata().X` must consist of values within a "
+				"negligble rounding distance from zero (tolerance approximately "
+				"1e-9). If your upstream analysis saves an explicit copy "
+				"to `adata.raw`, that call should occur before any normalization "
+				"or other transformation."
+			))
+
+		sparse_mat = self._X_to_csr(raw_adata.X)
 
 		sparse_mat = self._normalize_sparse_matrix(sparse_mat)
 
-		## Extract row and column names
+		## Get gene names
 
-		gene_indx_col_name = h5_file["var"].attrs["_index"]
-		cell_indx_col_name = h5_file["obs"].attrs["_index"]
+		self._gene_names = raw_adata.var_names.to_list()
 
-		self._gene_names = [
-			gene.decode("utf-8")
-			for gene in h5_file["var"][gene_indx_col_name]
-		]
+		## Get cell names
 
-		if self._chip_path is not None:
-			self._convert_gene_names()
+		self._cell_names = raw_adata.obs_names.to_list()
 
-		self._cell_names = [
-			barcode.decode("utf-8")
-			for barcode in h5_file["obs"][cell_indx_col_name]
-		]
+		## Get metadata
 
-		## Extract metadata and group labels
+		self._group_labels = adata.obs.loc[:,self._group_name]
 
-		group_codes = h5_file["obs"][self._group_name]["codes"][:]
-		group_categories = h5_file["obs"][self._group_name]["categories"][:]
+		if self._group_labels.shape[0] != len(self._cell_names):
+			print((
+				"Number of grouping labels from `adata.obs` and barcodes in "
+				"`adata.raw.obs_names` do not match. Only using cells "
+				"that have grouping information present in `adata.obs`"
+			))
 
-		self._group_labels = pd.Series(
-			[
-				group_categories[code].decode("utf-8") for code in group_codes
-			],
-			index = self._cell_names
-		)
+			shared_barcodes = list(set(self._group_labels.index).intersection(
+				self._cell_names
+			))
+
+			self._group_labels = self._group_labels[shared_barcodes]
+			self._cell_names = shared_barcodes
+
+		## Get metacells
 
 		self._metacells = self._get_metacells(sparse_mat)
+
 
 
 

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "sc_ssGSEA"
 
-version = "1.2.0"
+version = "1.2.1"
 
 authors = [
 	{name = "Alexander T. Wenzel", email = "atwenzel@ucsd.edu"},
@@ -17,7 +17,7 @@ dependencies = [
 	"numpy==1.26.4",
 	"scipy==1.11.0",
 	"typing-extensions==4.12.1",
-	"h5py==3.12.1"
+	"scanpy[leiden]==1.11.0"
 ]
 
 description = "A Python package for performing gene set enrichment analysis on single cell clusters."
