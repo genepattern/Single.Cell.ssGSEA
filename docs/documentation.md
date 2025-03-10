@@ -41,7 +41,7 @@ Create an account on the [GenePattern Cloud Server](https://cloud.genepattern.or
 The following code calls Single Cell ssGSEA on an RDS file containing a Seurat object, assuming that `seurat_object.rds` is the file, which contains a metadata column called `seurat_clusters`, and that gene sets are defined in `gene_sets.gmt`.
 
 ```python
-from sc_ssGSEA import read_gmts, run_ssgsea_parallel, Expression
+from sc_ssGSEA import read_gmt, run_ssgsea_parallel, Expression
 
 ## Load and parse expression + cell labels
 

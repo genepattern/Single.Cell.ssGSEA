@@ -39,7 +39,7 @@ version="$(echo $version | tr -d '"')"
 ## Build the python package
 
 if $build_package; then
-	python -m build
+	python3 -m build
 	python3 -m twine upload -r $repository dist/*${version}*
 	
 fi
