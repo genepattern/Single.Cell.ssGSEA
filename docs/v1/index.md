@@ -56,7 +56,7 @@ expr.load()
 
 ## Load gene sets
 
-gs, _ = read_gmts("gene_sets.gmt")
+gs, _ = read_gmt("gene_sets.gmt")
 
 ## Run single cell ssGSEA
 
