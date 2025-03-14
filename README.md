@@ -6,4 +6,4 @@
 
 **Contact**: [Forum Link](https://groups.google.com/forum/?utm_medium=email&utm_source=footer#!forum/genepattern-help)
 
-See [documentation](https://github.com/genepattern/scGSEA/documentation.md) for more details. 
+See [documentation](https://genepattern.github.io/Single.Cell.ssGSEA/v1/) for more details. 
