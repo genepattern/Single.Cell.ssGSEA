@@ -10,7 +10,7 @@ For more details and benchmarking results, see this [preprint](https://www.biorx
 
 # Installation
 
-Single Cell ssGSEA is available as a [Docker image](https://hub.docker.com/r/atwenzel/sc_ssgsea) and as a [PyPI Python package](https://pypi.org/project/sc-ssGSEA/). This method is also available as a GenePattern module on the [GenePattern Cloud Server](https://cloud.genepattern.org/gp/pages/login.jsf).
+Single Cell ssGSEA is available as a [Docker image]([https://hub.docker.com/r/atwenzel/sc_ssgsea](https://hub.docker.com/r/genepattern/sc_ssgsea)) and as a [PyPI Python package](https://pypi.org/project/sc-ssGSEA/). This method is also available as a GenePattern module on the [GenePattern Cloud Server](https://cloud.genepattern.org/gp/pages/login.jsf).
 
 To install the Docker image, run `docker pull atwenzel/sc_ssgsea`. 
 
