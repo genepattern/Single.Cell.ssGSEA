@@ -58,7 +58,8 @@ args = parser.parse_args()
 
 expr = Expression.get_expression_object(
 	args.input_file,
-	args.cluster_data_label
+	args.cluster_data_label,
+	chip_file_path = args.chip_file
 )
 
 expr.load()

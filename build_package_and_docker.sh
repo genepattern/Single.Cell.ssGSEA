@@ -53,6 +53,8 @@ if $build_docker; then
 
 	## Dual build Mac (linux/arm64) Linux (linux/amd64)
 	## For full debug log, add --progress=plain
+	echo "Building version $version..."
+
 	docker build -f Dockerfile --platform linux/amd64,linux/arm64 -t atwenzel/sc_ssgsea:v$version  \
 		--build-arg CACHEBUST=$(date +%s) .
 fi

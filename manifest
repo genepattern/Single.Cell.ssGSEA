@@ -1,5 +1,5 @@
 JVMLevel=
-LSID=urn\:lsid\:genepattern.org\:module.analysis\:00437
+LSID=urn\:lsid\:genepattern.org\:module.analysis\:00437\:999999999
 name=Single.Cell.ssGSEA
 author=Alexander T. Wenzel & John Jun
 categories=gsea;pathway analysis;projection;single-cell;singlecell
@@ -9,7 +9,7 @@ description=Perform Single Cell ssGSEA. Can be used after Seurat.Clustering modu
 documentationUrl=https://genepattern.github.io/Single.Cell.ssGSEA/v1/
 fileFormat=.tsv;.gct
 job.cpuCount=3
-job.docker.image=genepattern/scgsea:v1.1
+job.docker.image=atwenzel/sc_ssgsea:v1.2.10
 job.memory=8Gb
 job.walltime=
 language=any

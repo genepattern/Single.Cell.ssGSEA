@@ -6,7 +6,7 @@ SHELL ["/bin/bash", "-c"]
 
 ## Install Linux packages
 
-RUN apt-get install -y libbz2-dev
+RUN apt-get install -y libbz2-dev liblzma-dev
 
 ## Install Python 3.11.9
 

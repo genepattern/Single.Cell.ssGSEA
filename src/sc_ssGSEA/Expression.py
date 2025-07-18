@@ -285,6 +285,9 @@ class SeuratRDS_Expression(Expression):
 				line.strip('\n') for line in f.readlines()
 			]
 
+			if self._chip_path is not None:
+				self._convert_gene_names()
+
 		with open("/tmp/barcodes.tsv", 'r') as f:
 			self._cell_names = [
 				line.strip('\n') for line in f.readlines()
@@ -417,6 +420,9 @@ class H5AD_Expression(Expression):
 		## Get gene names
 
 		self._gene_names = raw_adata.var_names.to_list()
+
+		if self._chip_path is not None:
+			self._convert_gene_names()
 
 		## Get cell names
 
