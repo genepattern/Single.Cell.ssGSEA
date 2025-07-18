@@ -1,5 +1,5 @@
 JVMLevel=
-LSID=urn\:lsid\:genepattern.org\:module.analysis\:00437\:999999999
+LSID=urn\:lsid\:genepattern.org\:module.analysis\:00437
 name=Single.Cell.ssGSEA
 author=Alexander T. Wenzel & John Jun
 categories=gsea;pathway analysis;projection;single-cell;singlecell
