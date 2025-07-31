@@ -83,6 +83,10 @@ sc_ssGSEA_scores.to_csv(
 	sep = '\t'
 )
 
+## Save metacells
+
+expr.save_metacells()
+
 
 
 

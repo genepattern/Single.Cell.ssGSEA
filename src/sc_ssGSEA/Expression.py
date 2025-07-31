@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from gp.data import write_gct
 import inspect
 import math
 import numpy as np
@@ -6,7 +7,7 @@ import pandas as pd
 from scipy.io import mmread
 from scipy.sparse import spmatrix, csr_matrix
 from typing import List, Optional, Type, Union
-#import h5py
+import h5py
 import scanpy as sc
 import subprocess
 import sys
@@ -208,6 +209,17 @@ class Expression(ABC):
 			)
 		else:
 			raise ValueError(f"No registered parser for suffix '{suffix}'.")
+		
+	def save_metacells(self) -> None:
+		"""
+		"""
+		df = self._metacells.copy(deep = True)
+		
+		df.index = pd.MultiIndex.from_tuples([
+			(gene, gene) for gene in df.index
+		], names = ["Name", "Description"])
+
+		write_gct(df, "metacells.gct")
 
 	@property
 	def group_labels(self) -> pd.Series:
